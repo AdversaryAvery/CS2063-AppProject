@@ -23,6 +23,7 @@ public class gameController {
         while(i < allPlayers.size()){
             wheel.add(deck.get(0));
             deck.remove(0);
+            i++;
         }
     }
 
