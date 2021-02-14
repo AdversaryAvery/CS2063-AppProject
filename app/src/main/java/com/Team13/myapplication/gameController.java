@@ -18,6 +18,16 @@ public class gameController {
     private ArrayList<Object> allPlayers;
 
 
+
+
+
+    private void sumAllDecisions(ArrayList<Object> allPlayers){
+        int numberOfTurns = 0;
+        for(Object player: allPlayers){
+            //numberOfTurns += player.decision;
+        }
+    }
+
     private void assignCards2Wheel(ArrayList<Card> wheel, ArrayList<Card> deck){
         int i = 0;
         while(i < allPlayers.size()){
@@ -32,7 +42,7 @@ public class gameController {
 
         Drawable cardBack =  ResourcesCompat.getDrawable(res,R.drawable.card_red_back,null);
 
-        tempDeck.add(new Card(1,'s', ResourcesCompat.getDrawable(res,R.drawable.card_as,null),cardBack));
+        tempDeck.add(new Card(14,'s', ResourcesCompat.getDrawable(res,R.drawable.card_as,null),cardBack));
         tempDeck.add(new Card(2,'s', ResourcesCompat.getDrawable(res,R.drawable.card_2s,null),cardBack));
         tempDeck.add(new Card(3,'s', ResourcesCompat.getDrawable(res,R.drawable.card_3s,null),cardBack));
         tempDeck.add(new Card(4,'s', ResourcesCompat.getDrawable(res,R.drawable.card_4s,null),cardBack));
@@ -46,7 +56,7 @@ public class gameController {
         tempDeck.add(new Card(12,'s', ResourcesCompat.getDrawable(res,R.drawable.card_qs,null),cardBack));
         tempDeck.add(new Card(13,'s', ResourcesCompat.getDrawable(res,R.drawable.card_ks,null),cardBack));
 
-        tempDeck.add(new Card(1,'c', ResourcesCompat.getDrawable(res,R.drawable.card_ac,null),cardBack));
+        tempDeck.add(new Card(14,'c', ResourcesCompat.getDrawable(res,R.drawable.card_ac,null),cardBack));
         tempDeck.add(new Card(2,'c', ResourcesCompat.getDrawable(res,R.drawable.card_2c,null),cardBack));
         tempDeck.add(new Card(3,'c', ResourcesCompat.getDrawable(res,R.drawable.card_3c,null),cardBack));
         tempDeck.add(new Card(4,'c', ResourcesCompat.getDrawable(res,R.drawable.card_4c,null),cardBack));
@@ -60,7 +70,7 @@ public class gameController {
         tempDeck.add(new Card(12,'c', ResourcesCompat.getDrawable(res,R.drawable.card_qc,null),cardBack));
         tempDeck.add(new Card(13,'c', ResourcesCompat.getDrawable(res,R.drawable.card_kc,null),cardBack));
 
-        tempDeck.add(new Card(1,'h', ResourcesCompat.getDrawable(res,R.drawable.card_ah,null),cardBack));
+        tempDeck.add(new Card(14,'h', ResourcesCompat.getDrawable(res,R.drawable.card_ah,null),cardBack));
         tempDeck.add(new Card(2,'h', ResourcesCompat.getDrawable(res,R.drawable.card_2h,null),cardBack));
         tempDeck.add(new Card(3,'h', ResourcesCompat.getDrawable(res,R.drawable.card_3h,null),cardBack));
         tempDeck.add(new Card(4,'h', ResourcesCompat.getDrawable(res,R.drawable.card_4h,null),cardBack));
@@ -74,7 +84,7 @@ public class gameController {
         tempDeck.add(new Card(12,'h', ResourcesCompat.getDrawable(res,R.drawable.card_qh,null),cardBack));
         tempDeck.add(new Card(13,'h', ResourcesCompat.getDrawable(res,R.drawable.card_kh,null),cardBack));
 
-        tempDeck.add(new Card(1,'d', ResourcesCompat.getDrawable(res,R.drawable.card_ad,null),cardBack));
+        tempDeck.add(new Card(14,'d', ResourcesCompat.getDrawable(res,R.drawable.card_ad,null),cardBack));
         tempDeck.add(new Card(2,'d', ResourcesCompat.getDrawable(res,R.drawable.card_2d,null),cardBack));
         tempDeck.add(new Card(3,'d', ResourcesCompat.getDrawable(res,R.drawable.card_3d,null),cardBack));
         tempDeck.add(new Card(4,'d', ResourcesCompat.getDrawable(res,R.drawable.card_4d,null),cardBack));
