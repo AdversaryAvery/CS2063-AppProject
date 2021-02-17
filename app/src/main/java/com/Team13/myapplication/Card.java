@@ -2,7 +2,7 @@ package com.Team13.myapplication;
 
 import android.graphics.drawable.Drawable;
 
-public class Card {
+public class Card implements Comparable<Card> {
     private Boolean isFaceUp;
     private int value;
     private char suit;
@@ -47,6 +47,15 @@ public class Card {
 
     public void setFaceDownCard(Drawable faceDownCard) {
         this.faceDownCard = faceDownCard;
+    }
+
+    @Override
+    public int compareTo(Card other) {
+        if(this.getValue() > other.getValue())
+            return 1;
+        else if (this.getValue() == other.getValue())
+            return 0 ;
+        return -1 ;
     }
 
     public Card(int value, char suit, Drawable faceUpCard, Drawable faceDownCard) {
