@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="125dp"
+        android:gravity="center|top"
+        android:text="@string/welcome"
+        android:textColor="@color/purple_500"
+        android:textSize="23sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/instruction1"
+        android:layout_width="wrap_content"
+        android:layout_height="136dp"
+        android:textColor="@color/black"
+        android:text="@string/instruction1" />
+
+    <Button
+        android:id="@+id/btnLaunchGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/playWithAI" />
+</LinearLayout>

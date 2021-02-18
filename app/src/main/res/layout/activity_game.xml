@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity">
+
+    <github.hellocsl.cursorwheel.CursorWheelLayout
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/wheel_image"
+        android:layout_width="280dip"
+        android:layout_height="280dip"
+        app:wheelCursorHeight="19dip"
+        app:wheelCursorColor="#009688"
+        app:wheelItemRotateMode="none"
+        app:wheelSelectedAngle="270"
+        >
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Large.Inverse"
+            android:id="@+id/wheel_menu_center_item"
+            android:text="Image Wheel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#0098" />
+
+    </github.hellocsl.cursorwheel.CursorWheelLayout>
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="#1991D0"/>
+<!--    android:drawableTop="@drawable/timer"-->
+
+</RelativeLayout>
