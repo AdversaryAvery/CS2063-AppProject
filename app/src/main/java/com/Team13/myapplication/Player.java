@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Player {
-    private Boolean isDone;
-    private ArrayList<Card> hand;
+    protected Boolean isDone;
+    protected ArrayList<Card> hand;
     private Rank rank;
-    private int turnDecision;
+    protected int turnDecision;
 
     public Rank rankHand(ArrayList<Card> hand) {
         int highest = 0;
         int hRank = 0;
-
 //      Sort hand in descending order
-        Collections.sort(hand).reversed();
-        highest = hand.get(0);
+        Collections.sort(hand);
+        highest = hand.get(0).getValue();
 
         if (checkStrFlush(hand)) { hRank = 6; }
         else if (checkToK(hand)) {hRank = 5; }
@@ -26,8 +26,11 @@ public class Player {
         else if (checkPair(hand)) {hRank = 2; }
         else { hRank = 1; } // Highest Card
 
-        this.rank.setHandRank(hRank);
-        this.rank.setHighestCard(highest)
+        Rank playerRank = new Rank();
+        playerRank.setHandRank(hRank);
+        playerRank.setHighestCard(highest);
+
+        return playerRank;
     }
 
     public void roundStart(int choices) {
@@ -53,10 +56,10 @@ public class Player {
             }
         }
 //        Build Set of mappings in HashTable
-        Set<Entry<Integer, Integer>> entrySet = valueAndCount.entrySet();
+        Set<Map.Entry<Integer, Integer>> entrySet = valueAndCount.entrySet();
 //        Check if any of the values occur at least 3 times
-        for (Entry<Integer, Integer> entry : entrySet) {
-            if (entry.getValue() => 2) {
+        for (Map.Entry<Integer, Integer> entry : entrySet) {
+            if (entry.getValue() >= 2) {
                 isPair = true;
             }
         }
@@ -69,7 +72,7 @@ public class Player {
         char handSuit = hand.get(0).getSuit();
 
         for (int i = 1; i < hand.size(); i ++) {
-            if (i.getSuit() != handSuit) {
+            if (hand.get(i).getSuit() != handSuit) {
                 isFlush = false;
                 break;
             }
@@ -83,11 +86,11 @@ public class Player {
         int prevValue = hand.get(0).getValue();
 
         for (int i = 1; i < hand.size(); i ++) {
-            if (i.getValue() != prevValue-1) {
+            if (hand.get(i).getValue() != prevValue-1) {
                 isStraight= false;
                 break;
             }
-            prevValue = i.getValue();
+            prevValue = hand.get(i).getValue();
         }
 
         return isStraight;
@@ -107,10 +110,10 @@ public class Player {
             }
         }
 //        Build Set of mappings in HashTable
-        Set<Entry<Integer, Integer>> entrySet = valueAndCount.entrySet();
+        Set<Map.Entry<Integer, Integer>> entrySet = valueAndCount.entrySet();
 //        Check if any of the values occur at least 3 times
-        for (Entry<Integer, Integer> entry : entrySet) {
-            if (entry.getValue() => 3) {
+        for (Map.Entry<Integer, Integer> entry : entrySet) {
+            if (entry.getValue() >= 3) {
                 isToK = true;
             }
         }
@@ -124,11 +127,11 @@ public class Player {
         int prevValue = hand.get(0).getValue();
 
         for (int i = 1; i < hand.size(); i ++) {
-            if (i.getSuit() != suit || i.getValue() != prevValue-1) {
+            if (hand.get(i).getSuit() != suit || hand.get(i).getValue() != prevValue-1) {
                 isStrFlush= false;
                 break;
             }
-            prevValue = i.getValue();
+            prevValue = hand.get(i).getValue();
         }
 
         return isStrFlush;

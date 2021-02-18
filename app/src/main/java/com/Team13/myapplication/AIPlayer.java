@@ -7,6 +7,10 @@ public class AIPlayer extends Player {
     private int uBound = 100;
     private int lBound = 1;
 
+    public AIPlayer(ArrayList<Card> hand) {
+        super(hand);
+    }
+
     @Override
     public void roundStart(int choices) {
 //        Generates a random nuber between 1 - 100

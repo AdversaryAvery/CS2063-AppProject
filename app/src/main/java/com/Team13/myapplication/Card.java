@@ -51,11 +51,10 @@ public class Card implements Comparable<Card> {
 
     @Override
     public int compareTo(Card other) {
-        if(this.getValue() > other.getValue())
-            return 1;
-        else if (this.getValue() == other.getValue())
-            return 0 ;
-        return -1 ;
+        if(this.getValue() > other.getValue()) {
+            return -1;
+        }
+        return 1 ;
     }
 
     public Card(int value, char suit, Drawable faceUpCard, Drawable faceDownCard) {
