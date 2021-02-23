@@ -141,4 +141,36 @@ public class Player {
         this.isDone = false;
         this.hand = hand;
     }
+
+    public Boolean getDone() {
+        return isDone;
+    }
+
+    public void setDone(Boolean done) {
+        isDone = done;
+    }
+
+    public ArrayList<Card> getHand() {
+        return hand;
+    }
+
+    public void setHand(ArrayList<Card> hand) {
+        this.hand = hand;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public void setRank(Rank rank) {
+        this.rank = rank;
+    }
+
+    public int getTurnDecision() {
+        return turnDecision;
+    }
+
+    public void setTurnDecision(int turnDecision) {
+        this.turnDecision = turnDecision;
+    }
 }

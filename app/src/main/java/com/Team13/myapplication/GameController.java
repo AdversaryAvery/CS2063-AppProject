@@ -6,8 +6,9 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class gameController {
+public class GameController {
     private int roundNum;
     private float time;
     private int sumOfTurns;
@@ -15,20 +16,20 @@ public class gameController {
     private ArrayList<Card> wheel;
     private ArrayList<Card> deck;
 
-    private ArrayList<Object> allPlayers;
+    private ArrayList<Player> allPlayers;
 
 
 
 
 
-    private void sumAllDecisions(ArrayList<Object> allPlayers){
+    public void sumAllDecisions(ArrayList<Player> allPlayers){
         int numberOfTurns = 0;
-        for(Object player: allPlayers){
-            //numberOfTurns += player.decision;
+        for(Player player: allPlayers){
+            numberOfTurns += player.getTurnDecision();
         }
     }
 
-    private void assignCards2Wheel(ArrayList<Card> wheel, ArrayList<Card> deck){
+    public void assignCards2Wheel(ArrayList<Card> wheel, ArrayList<Card> deck){
         int i = 0;
         while(i < allPlayers.size()){
             wheel.add(deck.get(0));
@@ -37,7 +38,46 @@ public class gameController {
         }
     }
 
-    private ArrayList<Card> makeDeck(Resources res){
+    public void assignCards2Players(){
+        int i = 0;
+        while(i < allPlayers.size()){
+            allPlayers.get(i).getHand().add(wheel.get(0));
+            wheel.remove(0);
+            i++;
+        }
+    }
+
+
+    public ArrayList<Player> rankPlayers(){
+        Rank bestRank = new Rank();
+        bestRank.setHandRank(1);
+        bestRank.setHighestCard(2);
+
+        for(Player player: allPlayers){
+            if(player.getRank().getHandRank() > bestRank.getHandRank()){
+                bestRank.setHandRank(player.getRank().getHandRank());
+                bestRank.setHighestCard(player.getRank().getHighestCard());
+            }
+
+            else if(player.getRank().getHandRank() == bestRank.getHandRank() && player.getRank().getHighestCard() > bestRank.getHighestCard()){
+                bestRank.setHighestCard(player.getRank().getHighestCard());
+            }
+        }
+        ArrayList<Player> winningPlayerList = new ArrayList<Player>();
+        for(Player player: allPlayers) {
+            if (player.getRank().getHandRank() == bestRank.getHandRank() && player.getRank().getHighestCard() == bestRank.getHighestCard()){
+                winningPlayerList.add(player);
+            }
+
+        }
+        return winningPlayerList;
+    }
+
+    public void ShuffleDeck(){
+        Collections.shuffle(deck);
+    }
+
+    public ArrayList<Card> makeDeck(Resources res){
         ArrayList<Card> tempDeck = new ArrayList<Card>();
 
         Drawable cardBack =  ResourcesCompat.getDrawable(res,R.drawable.card_red_back,null);
@@ -98,6 +138,55 @@ public class gameController {
         tempDeck.add(new Card(12,'d', ResourcesCompat.getDrawable(res,R.drawable.card_qd,null),cardBack));
         tempDeck.add(new Card(13,'d', ResourcesCompat.getDrawable(res,R.drawable.card_kd,null),cardBack));
 
+        this.deck = tempDeck;
         return tempDeck;
+    }
+
+    public int getRoundNum() {
+        return roundNum;
+    }
+
+    public void setRoundNum(int roundNum) {
+        this.roundNum = roundNum;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
+    public int getSumOfTurns() {
+        return sumOfTurns;
+    }
+
+    public void setSumOfTurns(int sumOfTurns) {
+        this.sumOfTurns = sumOfTurns;
+    }
+
+    public ArrayList<Card> getWheel() {
+        return wheel;
+    }
+
+    public void setWheel(ArrayList<Card> wheel) {
+        this.wheel = wheel;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
+    }
+
+    public ArrayList<Player> getAllPlayers() {
+        return allPlayers;
+    }
+
+    public void setAllPlayers(ArrayList<Player> allPlayers) {
+        this.allPlayers = allPlayers;
     }
 }
