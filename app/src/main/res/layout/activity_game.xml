@@ -49,9 +49,11 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="1dp"
         android:gravity="top"
-        android:textColor="#1991D0"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:textColor="#1991D0"
+        android:drawableTop="@drawable/ic_timer"/>
 
     <ImageView
         android:id="@+id/UL"
@@ -85,8 +87,8 @@
         android:layout_alignBottom="@+id/wheel_image"
         android:layout_marginStart="40dp"
         android:layout_marginBottom="40dp"
-        android:contentDescription="@string/dl_card_desc"
-        android:visibility="visible" />
+        android:contentDescription="@string/dl_card_desc"/>
+
 
     <ImageView
         android:id="@+id/DR"

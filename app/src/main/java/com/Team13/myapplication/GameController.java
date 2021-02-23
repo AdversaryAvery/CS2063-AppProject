@@ -19,10 +19,10 @@ public class GameController {
     private ArrayList<Player> allPlayers;
 
 
-    public void sumAllDecisions(ArrayList<Object> allPlayers){
+    public void sumAllDecisions(ArrayList<Player> allPlayers){
         int numberOfTurns = 0;
-        for(Object player: allPlayers){
-            //numberOfTurns += player.decision;
+        for(Player player: allPlayers){
+            numberOfTurns += player.getTurnDecision();
         }
     }
 
@@ -33,6 +33,45 @@ public class GameController {
             this.deck.remove(0);
             i++;
         }
+    }
+
+    public void assignCards2Players(){
+        int i = 0;
+        while(i < allPlayers.size()){
+            allPlayers.get(i).getHand().add(wheel.get(0));
+            wheel.remove(0);
+            i++;
+        }
+    }
+
+
+    public ArrayList<Player> rankPlayers(){
+        Rank bestRank = new Rank();
+        bestRank.setHandRank(1);
+        bestRank.setHighestCard(2);
+
+        for(Player player: allPlayers){
+            if(player.getRank().getHandRank() > bestRank.getHandRank()){
+                bestRank.setHandRank(player.getRank().getHandRank());
+                bestRank.setHighestCard(player.getRank().getHighestCard());
+            }
+
+            else if(player.getRank().getHandRank() == bestRank.getHandRank() && player.getRank().getHighestCard() > bestRank.getHighestCard()){
+                bestRank.setHighestCard(player.getRank().getHighestCard());
+            }
+        }
+        ArrayList<Player> winningPlayerList = new ArrayList<Player>();
+        for(Player player: allPlayers) {
+            if (player.getRank().getHandRank() == bestRank.getHandRank() && player.getRank().getHighestCard() == bestRank.getHighestCard()){
+                winningPlayerList.add(player);
+            }
+
+        }
+        return winningPlayerList;
+    }
+
+    public void ShuffleDeck(){
+        Collections.shuffle(deck);
     }
 
     public ArrayList<Card> makeDeck(Resources res){
@@ -150,6 +189,6 @@ public class GameController {
 
     public GameController(Resources res){
         this.makeDeck(res);
-        Collections.shuffle(this.deck);
+        ShuffleDeck();
     }
 }

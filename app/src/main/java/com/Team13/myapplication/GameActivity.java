@@ -56,7 +56,8 @@ public class GameActivity extends AppCompatActivity {
 //        Set up gestureDetector to use swipe gestureListener
         swipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
-        ArrayList<Card> wheelHand = controller.getDeck();
+        controller.assignCards2Wheel();
+        ArrayList<Card> wheelHand = controller.getWheel();
         ImageView cardUpLeft = (ImageView) findViewById(R.id.UL);
         ImageView cardUpRight = (ImageView) findViewById(R.id.UR);
         ImageView cardDownLeft = (ImageView) findViewById(R.id.DL);
