@@ -3,4 +3,6 @@
     <string name="playWithAI">Play with AI</string>
     <string name="welcome">Welcome to poker wheel game, please read the following instructions:</string>
     <string name="instruction1">1) A timer will show how much time you have left to play</string>
+    <string name="channel_name">Notifications</string>
+    <string name="channel_description">Game Notice</string>
 </resources>

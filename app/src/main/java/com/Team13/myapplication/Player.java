@@ -137,8 +137,11 @@ public class Player {
         return isStrFlush;
     }
 
-    public Player(ArrayList<Card> hand) {
+    public void addCardToHand(Card card){
+        this.hand.add(card);
+    }
+
+    public Player() {
         this.isDone = false;
-        this.hand = hand;
     }
 }

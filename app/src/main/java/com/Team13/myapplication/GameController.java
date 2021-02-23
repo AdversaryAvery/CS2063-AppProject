@@ -6,8 +6,9 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class gameController {
+public class GameController {
     private int roundNum;
     private float time;
     private int sumOfTurns;
@@ -15,29 +16,26 @@ public class gameController {
     private ArrayList<Card> wheel;
     private ArrayList<Card> deck;
 
-    private ArrayList<Object> allPlayers;
+    private ArrayList<Player> allPlayers;
 
 
-
-
-
-    private void sumAllDecisions(ArrayList<Object> allPlayers){
+    public void sumAllDecisions(ArrayList<Object> allPlayers){
         int numberOfTurns = 0;
         for(Object player: allPlayers){
             //numberOfTurns += player.decision;
         }
     }
 
-    private void assignCards2Wheel(ArrayList<Card> wheel, ArrayList<Card> deck){
+    public void assignCards2Wheel(){
         int i = 0;
         while(i < allPlayers.size()){
-            wheel.add(deck.get(0));
-            deck.remove(0);
+            this.wheel.add(this.deck.get(0));
+            this.deck.remove(0);
             i++;
         }
     }
 
-    private ArrayList<Card> makeDeck(Resources res){
+    public ArrayList<Card> makeDeck(Resources res){
         ArrayList<Card> tempDeck = new ArrayList<Card>();
 
         Drawable cardBack =  ResourcesCompat.getDrawable(res,R.drawable.card_red_back,null);
@@ -98,6 +96,60 @@ public class gameController {
         tempDeck.add(new Card(12,'d', ResourcesCompat.getDrawable(res,R.drawable.card_qd,null),cardBack));
         tempDeck.add(new Card(13,'d', ResourcesCompat.getDrawable(res,R.drawable.card_kd,null),cardBack));
 
+        this.deck = tempDeck;
         return tempDeck;
+    }
+
+    public int getRoundNum() {
+        return roundNum;
+    }
+
+    public void setRoundNum(int roundNum) {
+        this.roundNum = roundNum;
+    }
+
+    public float getTime() {
+        return time;
+    }
+
+    public void setTime(float time) {
+        this.time = time;
+    }
+
+    public int getSumOfTurns() {
+        return sumOfTurns;
+    }
+
+    public void setSumOfTurns(int sumOfTurns) {
+        this.sumOfTurns = sumOfTurns;
+    }
+
+    public ArrayList<Card> getWheel() {
+        return wheel;
+    }
+
+    public void setWheel(ArrayList<Card> wheel) {
+        this.wheel = wheel;
+    }
+
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
+    }
+
+    public ArrayList<Player> getAllPlayers() {
+        return allPlayers;
+    }
+
+    public void setAllPlayers(ArrayList<Player> allPlayers) {
+        this.allPlayers = allPlayers;
+    }
+
+    public GameController(Resources res){
+        this.makeDeck(res);
+        Collections.shuffle(this.deck);
     }
 }
