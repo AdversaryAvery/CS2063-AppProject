@@ -37,7 +37,7 @@
         android:gravity="top"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="#1991D0"/>
-<!--    android:drawableTop="@drawable/timer"-->
+        android:textColor="#1991D0"
+        android:drawableTop="@drawable/ic_timer"/>
 
 </RelativeLayout>
