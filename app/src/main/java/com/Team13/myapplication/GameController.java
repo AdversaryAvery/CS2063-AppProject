@@ -19,9 +19,6 @@ public class GameController {
     private ArrayList<Player> allPlayers;
 
 
-
-
-
     public void sumAllDecisions(ArrayList<Player> allPlayers){
         int numberOfTurns = 0;
         for(Player player: allPlayers){
@@ -29,11 +26,11 @@ public class GameController {
         }
     }
 
-    public void assignCards2Wheel(ArrayList<Card> wheel, ArrayList<Card> deck){
+    public void assignCards2Wheel(){
         int i = 0;
         while(i < allPlayers.size()){
-            wheel.add(deck.get(0));
-            deck.remove(0);
+            this.wheel.add(this.deck.get(0));
+            this.deck.remove(0);
             i++;
         }
     }
@@ -188,5 +185,10 @@ public class GameController {
 
     public void setAllPlayers(ArrayList<Player> allPlayers) {
         this.allPlayers = allPlayers;
+    }
+
+    public GameController(Resources res){
+        this.makeDeck(res);
+        ShuffleDeck();
     }
 }

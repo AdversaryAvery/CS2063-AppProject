@@ -1,5 +1,7 @@
 package com.Team13.myapplication;
 
+import android.widget.Button;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
@@ -137,9 +139,12 @@ public class Player {
         return isStrFlush;
     }
 
-    public Player(ArrayList<Card> hand) {
+    public void addCardToHand(Card card){
+        this.hand.add(card);
+    }
+
+    public Player() {
         this.isDone = false;
-        this.hand = hand;
     }
 
     public Boolean getDone() {

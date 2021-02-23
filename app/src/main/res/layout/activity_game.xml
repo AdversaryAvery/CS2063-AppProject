@@ -17,7 +17,7 @@
         app:wheelCursorColor="#009688"
         app:wheelItemRotateMode="none"
         app:wheelSelectedAngle="270"
-        >
+        tools:ignore="MissingClass">
 
         <TextView
             style="@style/TextAppearance.AppCompat.Large.Inverse"
@@ -30,14 +30,75 @@
 
     </github.hellocsl.cursorwheel.CursorWheelLayout>
 
-    <TextView
-        android:id="@+id/timer"
+    <Button
+        android:id="@+id/turnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/wheel_image"
+        android:layout_marginEnd="-11dp"
+        android:layout_marginBottom="14dp"
+        android:layout_toStartOf="@+id/wheel_image"
+        android:text="@string/button_turn" />
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="148dp"
+        android:layout_height="80dp"
+        android:layout_above="@+id/wheel_image"
+        android:layout_alignEnd="@+id/wheel_image"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="1dp"
         android:gravity="top"
         android:textSize="24sp"
+        android:visibility="visible"
         android:textStyle="bold"
         android:textColor="#1991D0"
         android:drawableTop="@drawable/ic_timer"/>
 
+    <ImageView
+        android:id="@+id/UL"
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        android:layout_alignStart="@+id/wheel_image"
+        android:layout_alignTop="@+id/wheel_image"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="84dp"
+        android:contentDescription="@string/ul_card_desc"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/UR"
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        android:layout_alignTop="@+id/wheel_image"
+        android:layout_alignEnd="@+id/wheel_image"
+        android:layout_marginStart="189dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:contentDescription="@string/ur_card_desc"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/DL"
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        android:layout_alignStart="@+id/wheel_image"
+        android:layout_alignBottom="@+id/wheel_image"
+        android:layout_marginStart="40dp"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/dl_card_desc"/>
+
+
+    <ImageView
+        android:id="@+id/DR"
+        android:layout_width="55dp"
+        android:layout_height="100dp"
+        android:layout_alignEnd="@+id/wheel_image"
+        android:layout_alignBottom="@+id/wheel_image"
+        android:layout_marginStart="191dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
+        android:contentDescription="@string/dr_card_desc"
+        android:visibility="visible" />
 </RelativeLayout>
