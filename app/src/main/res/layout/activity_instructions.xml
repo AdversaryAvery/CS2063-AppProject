@@ -3,7 +3,7 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/gradient"
+    android:background="@drawable/background2"
     android:gravity="center_vertical|center_horizontal">
 
 
@@ -11,7 +11,7 @@
         android:id="@+id/instruction1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:text="@string/instruction1" />
 
     <Button
@@ -24,10 +24,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="280dp"
+        android:layout_marginRight="80dp"
         android:background="@drawable/rounded_corner"
         android:text="@string/back"
         android:textColor="@color/black"
         android:theme="@style/ButtonStyle"
-        app:backgroundTint="#FFF8C6" />
+        app:backgroundTint="@color/white" />
 
 </LinearLayout>
