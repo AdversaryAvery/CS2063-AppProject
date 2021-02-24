@@ -10,6 +10,7 @@
     <string name="dr_card_desc">Lower Right Card</string>
     <string name="button_turn">End Turn</string>
     <string name="instructions">Instructions</string>
+    <string name="back">Back</string>
     <string name="instruction1">1) A timer will show how much time you have left to play\n</string>
     <string name="instruction2">2) You can swipe left or right to turn the wheel\n</string>
     <string name="instruction3">3) There are 5 rounds in total and you can swipe left/right max 3 times in each round\n</string>
