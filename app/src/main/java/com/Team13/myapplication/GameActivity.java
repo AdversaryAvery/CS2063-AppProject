@@ -41,6 +41,28 @@ public class GameActivity extends AppCompatActivity {
     private Button endTurnButton;
     private CountDownTimer roundTimer;
 
+
+    ImageView cardUpLeft;
+    ImageView cardUpRight;
+    ImageView cardDownLeft;
+    ImageView cardDownRight;
+
+    ImageView player1card1;
+    ImageView player1card2;
+    ImageView player1card3;
+
+    ImageView player2card1;
+    ImageView player2card2;
+    ImageView player2card3;
+
+    ImageView player3card1;
+    ImageView player3card2;
+    ImageView player3card3;
+
+    ImageView player4card1;
+    ImageView player4card2;
+    ImageView player4card3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate called");
@@ -56,17 +78,30 @@ public class GameActivity extends AppCompatActivity {
 //        Set up gestureDetector to use swipe gestureListener
         swipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
-        controller.assignCards2Wheel();
-        ArrayList<Card> wheelHand = controller.getWheel();
-        ImageView cardUpLeft = (ImageView) findViewById(R.id.UL);
-        ImageView cardUpRight = (ImageView) findViewById(R.id.UR);
-        ImageView cardDownLeft = (ImageView) findViewById(R.id.DL);
-        ImageView cardDownRight = (ImageView) findViewById(R.id.DR);
 
-        cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard());
-        cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard());
-        cardDownLeft.setImageDrawable(wheelHand.get(2).getFaceUpCard());
-        cardDownRight.setImageDrawable(wheelHand.get(3).getFaceUpCard());
+
+        cardUpLeft = (ImageView) findViewById(R.id.UL);
+        cardUpRight = (ImageView) findViewById(R.id.UR);
+        cardDownLeft = (ImageView) findViewById(R.id.DL);
+        cardDownRight = (ImageView) findViewById(R.id.DR);
+
+        player1card1 = findViewById(R.id.player1card1);
+        player1card2 = findViewById(R.id.player1card2);
+        player1card3 = findViewById(R.id.player1card3);
+
+        player2card1 = findViewById(R.id.player2card1);
+        player2card2 = findViewById(R.id.player2card2);
+        player2card3 = findViewById(R.id.player2card3);
+
+        player3card1 = findViewById(R.id.player3card1);
+        player3card2 = findViewById(R.id.player3card2);
+        player3card3 = findViewById(R.id.player3card3);
+
+        player4card1 = findViewById(R.id.player4card1);
+        player4card2 = findViewById(R.id.player4card2);
+        player4card3 = findViewById(R.id.player4card3);
+
+
 
         ArrayList<Player> players = new ArrayList<Player>();
 //        Real game code
@@ -79,7 +114,10 @@ public class GameActivity extends AppCompatActivity {
         players.add(new AIPlayer());
         controller.setAllPlayers(players);
 
+
+
         endTurnButton = findViewById(R.id.turnButton);
+
         endTurnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,27 +126,8 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        TextView timer = findViewById(R.id.timer);
-
-        long duration = TimeUnit.MINUTES.toMillis(1);
-        roundTimer = new  CountDownTimer(duration, 1000){
-            @Override
-            public void onTick(long l){
-                String sDuration = String.format(Locale.ENGLISH, "%02d : %02d"
-                        , TimeUnit.MILLISECONDS.toMinutes(l)
-                        , TimeUnit.MILLISECONDS.toSeconds(l) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
-                timer.setText(sDuration);
-            }
-
-            @Override
-            public void onFinish(){
-                timer.setVisibility(View.GONE);
-                endPlayerTurn();
-                Toast.makeText(getApplicationContext(), "Timer has ended", Toast.LENGTH_LONG).show();
-            }
-        };
-        roundTimer.start();
+        // Round Logic Starts Here
+        startRound();
 
     }
 
@@ -203,11 +222,11 @@ public class GameActivity extends AppCompatActivity {
 //        End Round for all players
 //        Stop and Remove Timer
         TextView timer = findViewById(R.id.timer);
-        timer.setVisibility(View.INVISIBLE);
+        //timer.setVisibility(View.INVISIBLE);
         roundTimer.cancel();
 //        Remove button
         Button bttn = findViewById(R.id.turnButton);
-        bttn.setVisibility(View.INVISIBLE);
+       // bttn.setVisibility(View.INVISIBLE);
 //        This is only done for prototype
         ArrayList<Player> players = controller.getAllPlayers();
         for (Player p : players){
@@ -224,5 +243,82 @@ public class GameActivity extends AppCompatActivity {
 //              Show notification
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
+        endRound();
+    }
+
+    public void startRound(){
+        TextView timer = findViewById(R.id.timer);
+
+        long duration = TimeUnit.MINUTES.toMillis(1);
+        roundTimer = new  CountDownTimer(duration, 1000){
+            @Override
+            public void onTick(long l){
+                String sDuration = String.format(Locale.ENGLISH, "%02d : %02d"
+                        , TimeUnit.MILLISECONDS.toMinutes(l)
+                        , TimeUnit.MILLISECONDS.toSeconds(l) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
+                timer.setText(sDuration);
+            }
+
+            @Override
+            public void onFinish(){
+                timer.setVisibility(View.GONE);
+                endPlayerTurn();
+                Toast.makeText(getApplicationContext(), "Timer has ended", Toast.LENGTH_LONG).show();
+            }
+        };
+        roundTimer.start();
+
+        controller.assignCards2Wheel();
+        ArrayList<Card> wheelHand = controller.getWheel();
+
+        cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard()); // In front of Player 1
+        cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
+        cardDownRight.setImageDrawable(wheelHand.get(2).getFaceUpCard()); // In front of Player 3
+        cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
+    }
+
+    public void endRound(){
+
+        controller.sumAllDecisions();
+        controller.shiftWheel();
+        controller.assignCards2Players();
+
+        int cardsInHand = 4 - controller.getRoundNum();
+        ArrayList<Player> tempPlayerList = controller.getAllPlayers();
+
+        if(cardsInHand >= 1 ){
+            player1card1.setImageDrawable(tempPlayerList.get(0).getHand().get(0).getFaceUpCard()); // In front of Player 1
+            player2card1.setImageDrawable(tempPlayerList.get(1).getHand().get(0).getFaceUpCard()); // In front of Player 2
+            player3card1.setImageDrawable(tempPlayerList.get(2).getHand().get(0).getFaceUpCard()); // In front of Player 3
+            player4card1.setImageDrawable(tempPlayerList.get(3).getHand().get(0).getFaceUpCard()); // In front of Player 4
+        }
+        if(cardsInHand >= 2 ){
+            player1card2.setImageDrawable(tempPlayerList.get(0).getHand().get(1).getFaceUpCard()); // In front of Player 1
+            player2card2.setImageDrawable(tempPlayerList.get(1).getHand().get(1).getFaceUpCard()); // In front of Player 2
+            player3card2.setImageDrawable(tempPlayerList.get(2).getHand().get(1).getFaceUpCard()); // In front of Player 3
+            player4card2.setImageDrawable(tempPlayerList.get(3).getHand().get(1).getFaceUpCard()); // In front of Player 4
+        }
+        if(cardsInHand >= 3){
+            player1card3.setImageDrawable(tempPlayerList.get(0).getHand().get(2).getFaceUpCard()); // In front of Player 1
+            player2card3.setImageDrawable(tempPlayerList.get(1).getHand().get(2).getFaceUpCard()); // In front of Player 2
+            player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getFaceUpCard()); // In front of Player 3
+            player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getFaceUpCard()); // In front of Player 4
+        }
+
+
+
+
+
+
+        controller.setRoundNum(controller.getRoundNum() - 1);
+        if(controller.getRoundNum() >= 1){
+            startRound();
+        }
+        else{
+            //Game Over Code Goes Here
+        }
+
+
     }
 }

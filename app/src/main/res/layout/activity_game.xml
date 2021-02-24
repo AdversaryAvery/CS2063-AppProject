@@ -101,4 +101,177 @@
         android:layout_marginBottom="40dp"
         android:contentDescription="@string/dr_card_desc"
         android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player1name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="121dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 1" />
+
+    <ImageView
+        android:id="@+id/player1card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player1name"
+        android:layout_alignTop="@+id/player1name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player1card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player1name"
+        android:layout_alignTop="@+id/player1name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player1card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player1name"
+        android:layout_alignTop="@+id/player1name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player2name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="-350dp"
+        android:layout_marginBottom="122dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 2" />
+
+    <ImageView
+        android:id="@+id/player2card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player2name"
+        android:layout_alignTop="@+id/player2name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player2card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player2name"
+        android:layout_alignTop="@+id/player2name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player2card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player2name"
+        android:layout_alignTop="@+id/player2name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player3name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="-350dp"
+        android:layout_marginBottom="-93dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 3" />
+
+    <ImageView
+        android:id="@+id/player3card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player3name"
+        android:layout_alignTop="@+id/player3name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player3card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player3name"
+        android:layout_alignTop="@+id/player3name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player3card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player3name"
+        android:layout_alignTop="@+id/player3name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player4name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="-93dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 4" />
+
+    <ImageView
+        android:id="@+id/player4card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player4name"
+        android:layout_alignTop="@+id/player4name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player4card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player4name"
+        android:layout_alignTop="@+id/player4name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player4card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player4name"
+        android:layout_alignTop="@+id/player4name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.Team13.myapplication;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.core.content.res.ResourcesCompat;
 
@@ -19,18 +20,38 @@ public class GameController {
     private ArrayList<Player> allPlayers;
 
 
-    public void sumAllDecisions(ArrayList<Player> allPlayers){
+    public int sumAllDecisions(){
         int numberOfTurns = 0;
         for(Player player: allPlayers){
             numberOfTurns += player.getTurnDecision();
         }
+
+        sumOfTurns = numberOfTurns;
+        return numberOfTurns;
+    }
+
+    public ArrayList<Card> shiftWheel(){
+        ArrayList<Card> tempWheel = new ArrayList<Card>();
+
+        int i = 0;
+        int index = sumOfTurns;
+
+        while(i < wheel.size()){
+            tempWheel.add(wheel.get((index + i + wheel.size()*3) % wheel.size()));
+            i++;
+        }
+
+        wheel = tempWheel;
+        return wheel;
     }
 
     public void assignCards2Wheel(){
         int i = 0;
+        Log.i("Card2Wheel","Players : " + String.valueOf(allPlayers.size()) );
+        Log.i("Card2Wheel2","Deck : " + String.valueOf(deck.size()) );
         while(i < allPlayers.size()){
-            this.wheel.add(this.deck.get(0));
-            this.deck.remove(0);
+            wheel.add(deck.get(0));
+            deck.remove(0);
             i++;
         }
     }
@@ -135,7 +156,6 @@ public class GameController {
         tempDeck.add(new Card(12,'d', ResourcesCompat.getDrawable(res,R.drawable.card_qd,null),cardBack));
         tempDeck.add(new Card(13,'d', ResourcesCompat.getDrawable(res,R.drawable.card_kd,null),cardBack));
 
-        this.deck = tempDeck;
         return tempDeck;
     }
 
@@ -188,7 +208,8 @@ public class GameController {
     }
 
     public GameController(Resources res){
-        this.makeDeck(res);
+        this.deck = makeDeck(res);
+        wheel = new ArrayList<Card>();
         ShuffleDeck();
     }
 }

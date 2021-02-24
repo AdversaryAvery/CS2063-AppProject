@@ -145,6 +145,7 @@ public class Player {
 
     public Player() {
         this.isDone = false;
+        hand = new ArrayList<Card>();
     }
 
     public Boolean getDone() {
