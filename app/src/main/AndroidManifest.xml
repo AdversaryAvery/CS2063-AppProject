@@ -16,16 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         <activity
             android:name=".GameActivity"
-            android:screenOrientation="landscape">
-
-        </activity>
-=======
-        <activity android:name=".GameActivity"></activity>
+            android:screenOrientation="landscape"></activity>
         <activity android:name=".InstructionsActivity"></activity>
->>>>>>> main
     </application>
 
 </manifest>
