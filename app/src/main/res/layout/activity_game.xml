@@ -53,7 +53,7 @@
         android:visibility="visible"
         android:textStyle="bold"
         android:textColor="#1991D0"
-        android:drawableTop="@drawable/ic_timer"/>
+        app:drawableTopCompat="@drawable/ic_timer" />
 
     <ImageView
         android:id="@+id/UL"
