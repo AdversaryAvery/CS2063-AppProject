@@ -212,4 +212,10 @@ public class GameController {
         wheel = new ArrayList<Card>();
         ShuffleDeck();
     }
+
+    public void startRound(){
+        for(Player player: allPlayers){
+            player.roundStart(3);
+        }
+    }
 }

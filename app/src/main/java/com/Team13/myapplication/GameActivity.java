@@ -41,6 +41,8 @@ public class GameActivity extends AppCompatActivity {
     private Button endTurnButton;
     private CountDownTimer roundTimer;
 
+    private ArrayList<Card> postWheel;
+
 
     ImageView cardUpLeft;
     ImageView cardUpRight;
@@ -141,7 +143,7 @@ public class GameActivity extends AppCompatActivity {
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "SWIPE DETECTED";
         private int swipeCount= 0;
-        private int sensitivity = 10;
+        private int sensitivity = 2;
         @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
@@ -186,6 +188,7 @@ public class GameActivity extends AppCompatActivity {
 //              Show notification
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
+        controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() -1);
     }
 
 
@@ -203,6 +206,8 @@ public class GameActivity extends AppCompatActivity {
 //              Show notification
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
+
+        controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() + 1);
 
     }
 
@@ -249,6 +254,15 @@ public class GameActivity extends AppCompatActivity {
     public void startRound(){
         TextView timer = findViewById(R.id.timer);
 
+        endTurnButton.setText("End Turn");
+        endTurnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "endTurnButton onClick() called");
+                endPlayerTurn();
+            }
+        });
+
         long duration = TimeUnit.MINUTES.toMillis(1);
         roundTimer = new  CountDownTimer(duration, 1000){
             @Override
@@ -262,7 +276,7 @@ public class GameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish(){
-                timer.setVisibility(View.GONE);
+                //timer.setVisibility(View.GONE);
                 endPlayerTurn();
                 Toast.makeText(getApplicationContext(), "Timer has ended", Toast.LENGTH_LONG).show();
             }
@@ -276,15 +290,54 @@ public class GameActivity extends AppCompatActivity {
         cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
         cardDownRight.setImageDrawable(wheelHand.get(2).getFaceUpCard()); // In front of Player 3
         cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
+
+        controller.startRound();
     }
 
     public void endRound(){
 
         controller.sumAllDecisions();
         controller.shiftWheel();
+
+
+
+
+
+
+
+        controller.setRoundNum(controller.getRoundNum() - 1);
+        if(controller.getRoundNum() >= 0){
+            postRound();
+        }
+        else{
+            //Game Over Code Goes Here
+        }
+
+
+    }
+
+
+    void postRound(){
+        endTurnButton.setText("Start Round");
+        endTurnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "endTurnButton onClick() called");
+                startRound();
+            }
+        });
+        ArrayList<Card> wheelHand = controller.getWheel();
+
+
+
+        cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard()); // In front of Player 1
+        cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
+        cardDownRight.setImageDrawable(wheelHand.get(2).getFaceUpCard()); // In front of Player 3
+        cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
+
         controller.assignCards2Players();
 
-        int cardsInHand = 4 - controller.getRoundNum();
+        int cardsInHand = 3 - controller.getRoundNum();
         ArrayList<Player> tempPlayerList = controller.getAllPlayers();
 
         if(cardsInHand >= 1 ){
@@ -305,20 +358,6 @@ public class GameActivity extends AppCompatActivity {
             player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getFaceUpCard()); // In front of Player 3
             player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getFaceUpCard()); // In front of Player 4
         }
-
-
-
-
-
-
-        controller.setRoundNum(controller.getRoundNum() - 1);
-        if(controller.getRoundNum() >= 1){
-            startRound();
-        }
-        else{
-            //Game Over Code Goes Here
-        }
-
 
     }
 }
