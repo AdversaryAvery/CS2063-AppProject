@@ -274,4 +274,19 @@
         android:layout_marginEnd="140dp"
         android:visibility="visible" />
 
+    <TextView
+        android:id="@+id/decisionView"
+        android:layout_width="291dp"
+        android:layout_height="68dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="220dp"
+        android:layout_marginEnd="220dp"
+        android:layout_marginBottom="-12dp"
+        android:minWidth="60dp"
+        android:text="Your Decision:"
+        android:textAlignment="textStart"
+        android:textSize="24sp" />
+
 </RelativeLayout>

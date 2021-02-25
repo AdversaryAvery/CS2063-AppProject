@@ -37,7 +37,7 @@ public class GameController {
         int index = sumOfTurns;
 
         while(i < wheel.size()){
-            tempWheel.add(wheel.get((index + i + wheel.size()*3) % wheel.size()));
+            tempWheel.add(wheel.get((-index + i + wheel.size()*3) % wheel.size()));
             i++;
         }
 
@@ -70,6 +70,10 @@ public class GameController {
         Rank bestRank = new Rank();
         bestRank.setHandRank(1);
         bestRank.setHighestCard(2);
+
+        for(Player player: allPlayers){
+            player.rankHand(player.getHand());
+        }
 
         for(Player player: allPlayers){
             if(player.getRank().getHandRank() > bestRank.getHandRank()){
@@ -215,7 +219,7 @@ public class GameController {
 
     public void startRound(){
         for(Player player: allPlayers){
-            player.roundStart(3);
+            player.roundStart(-1, 1);
         }
     }
 }

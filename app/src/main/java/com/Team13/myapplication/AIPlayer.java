@@ -10,11 +10,11 @@ public class AIPlayer extends Player {
     public AIPlayer() {    }
 
     @Override
-    public void roundStart(int choices) {
+    public void roundStart(int min, int max) {
 //        Generates a random nuber between 1 - 100
         randomSeed = (int)(Math.random() * (uBound - lBound + 1) + lBound);
 //        Set AI Player's choice
-        this.turnDecision = randomSeed % choices;
+        this.turnDecision = (randomSeed % (max - min + 1)) - max;
 //        End AI Player's turn
         this.isDone= true;
     }

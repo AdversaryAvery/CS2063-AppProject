@@ -35,7 +35,7 @@ public class Player {
         return playerRank;
     }
 
-    public void roundStart(int choices) {
+    public void roundStart(int min, int max) {
         this.isDone = false;
         this.turnDecision = 0;
     }

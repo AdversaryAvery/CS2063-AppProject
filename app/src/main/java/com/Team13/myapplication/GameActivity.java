@@ -43,7 +43,7 @@ public class GameActivity extends AppCompatActivity {
 
     private ArrayList<Card> postWheel;
 
-
+    TextView decisionView;
     ImageView cardUpLeft;
     ImageView cardUpRight;
     ImageView cardDownLeft;
@@ -64,6 +64,11 @@ public class GameActivity extends AppCompatActivity {
     ImageView player4card1;
     ImageView player4card2;
     ImageView player4card3;
+
+    TextView player1name;
+    TextView player2name;
+    TextView player3name;
+    TextView player4name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +108,12 @@ public class GameActivity extends AppCompatActivity {
         player4card2 = findViewById(R.id.player4card2);
         player4card3 = findViewById(R.id.player4card3);
 
+        decisionView = findViewById(R.id.decisionView);
 
+        player1name = findViewById(R.id.player1name);
+        player2name = findViewById(R.id.player2name);
+        player3name = findViewById(R.id.player3name);
+        player4name = findViewById(R.id.player4name);
 
         ArrayList<Player> players = new ArrayList<Player>();
 //        Real game code
@@ -189,6 +199,7 @@ public class GameActivity extends AppCompatActivity {
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
         controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() -1);
+        decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
 
@@ -208,7 +219,7 @@ public class GameActivity extends AppCompatActivity {
         nManager.notify(NOTIFICATION_ID, builder.build());
 
         controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() + 1);
-
+        decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
     private void createNotificationChannel(Context context) {
@@ -252,6 +263,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void startRound(){
+
+        player1name.setText("Player 1");
+        player2name.setText("Player 2");
+        player3name.setText("Player 3");
+        player4name.setText("Player 4");
+
         TextView timer = findViewById(R.id.timer);
 
         endTurnButton.setText("End Turn");
@@ -292,14 +309,21 @@ public class GameActivity extends AppCompatActivity {
         cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
 
         controller.startRound();
+        decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
     public void endRound(){
 
         controller.sumAllDecisions();
+        decisionView.setText("Sum of Decisions:" + String.valueOf(controller.getSumOfTurns()));
         controller.shiftWheel();
 
+        ArrayList<Player> tempPlayerList = controller.getAllPlayers();
 
+        player1name.append(": " + String.valueOf(tempPlayerList.get(0).getTurnDecision()));
+        player2name.append(": " + String.valueOf(tempPlayerList.get(1).getTurnDecision()));
+        player3name.append(": " + String.valueOf(tempPlayerList.get(2).getTurnDecision()));
+        player4name.append(": " + String.valueOf(tempPlayerList.get(3).getTurnDecision()));
 
 
 
@@ -357,7 +381,25 @@ public class GameActivity extends AppCompatActivity {
             player2card3.setImageDrawable(tempPlayerList.get(1).getHand().get(2).getFaceUpCard()); // In front of Player 2
             player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getFaceUpCard()); // In front of Player 3
             player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getFaceUpCard()); // In front of Player 4
-        }
+
+            //ArrayList<Player> winnerList = controller.rankPlayers();
+            /*
+            String tempString;
+            Player winner = winnerList.get(0);
+            Rank tempRank = winner.getRank();
+
+            switch(tempRank.getHandRank()){
+                case 6: tempString = "Straight Flush"; break;
+                case 5: tempString = "Three of a Kind"; break;
+                case 4: tempString = "Straight"; break;
+                case 3: tempString = "Flush"; break;
+                case 2: tempString = "Pair"; break;
+                default: tempString = "High Card"; break;
+            }
+
+            decisionView.append("\nBest Hand:" + tempString);
+            */
+            }
 
     }
 }
