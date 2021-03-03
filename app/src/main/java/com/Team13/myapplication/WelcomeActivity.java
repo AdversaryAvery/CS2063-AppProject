@@ -13,6 +13,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Button playGameButton;
     private Button instructionsButton;
+    private Button settingsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +26,15 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WelcomeActivity.this, InstructionsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        settingsButton = findViewById(R.id.btnSettings);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
         });
