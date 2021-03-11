@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "831941966574",
+    "project_id": "pokerwheel-ab09f",
+    "storage_bucket": "pokerwheel-ab09f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831941966574:android:d9e2ba7808685bd0b511ff",
+        "android_client_info": {
+          "package_name": "com.Team13.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831941966574-cvo7jarlijuradr64kphniqemcii0ila.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASxEBxsXRb-ODo9MpdSuTe_RWgJ8Xx9Q0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831941966574-cvo7jarlijuradr64kphniqemcii0ila.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
