@@ -41,7 +41,12 @@ public class GameActivity extends AppCompatActivity {
     private Button endTurnButton;
     private CountDownTimer roundTimer;
 
-    private ArrayList<Card> postWheel;
+    //Configurable Values
+    private int numberOfRounds;
+    private Boolean showCards;
+    private Boolean startWithCards;
+    private int numberOfCards;
+    //
 
     TextView decisionView;
     ImageView cardUpLeft;
@@ -72,6 +77,15 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //Load Values from preferences
+
+        numberOfRounds = 3;
+        numberOfCards = 3;
+        showCards = true;
+        startWithCards = false;
+
+
         Log.i(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
@@ -79,7 +93,10 @@ public class GameActivity extends AppCompatActivity {
 //        Create/Instantiate game controller
         controller = new GameController(getResources());
 //        Set num of rounds 3
-        controller.setRoundNum(3);
+
+        //Load Round Number from User Preferences
+        // int temp = pref.
+        controller.setRoundNum(numberOfRounds);
 //        Create Notification Channel
         createNotificationChannel(this);
 //        Set up gestureDetector to use swipe gestureListener
@@ -126,7 +143,9 @@ public class GameActivity extends AppCompatActivity {
         players.add(new AIPlayer());
         controller.setAllPlayers(players);
 
-
+        if(startWithCards){
+            controller.startingCards(numberOfCards);
+        }
 
         endTurnButton = findViewById(R.id.turnButton);
 
@@ -300,8 +319,14 @@ public class GameActivity extends AppCompatActivity {
         };
         roundTimer.start();
 
-        controller.assignCards2Wheel();
         ArrayList<Card> wheelHand = controller.getWheel();
+        if(startWithCards){
+            controller.donations2Wheel();
+        }
+
+        else{
+        controller.assignCards2Wheel();
+        }
 
         cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard()); // In front of Player 1
         cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
@@ -313,7 +338,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void endRound(){
-
+        if(controller.getRoundNum() > 0){
         controller.sumAllDecisions();
         decisionView.setText("Sum of Decisions:" + String.valueOf(controller.getSumOfTurns()));
         controller.shiftWheel();
@@ -330,11 +355,42 @@ public class GameActivity extends AppCompatActivity {
 
 
         controller.setRoundNum(controller.getRoundNum() - 1);
-        if(controller.getRoundNum() >= 0){
+            Log.i("Post Round","Before Round" + String.valueOf(controller.getRoundNum()));
             postRound();
         }
         else{
-            //Game Over Code Goes Here
+            Log.i("Post Game","Start Ranking");
+            ArrayList<Player> winnerList = controller.rankPlayers(numberOfCards,numberOfRounds);
+
+            String tempString;
+            Player winner = winnerList.get(0);
+            Rank tempRank = winner.getRank();
+
+            if(numberOfCards == 3){
+            switch(tempRank.getHandRank()){
+                case 6: tempString = "Straight Flush"; break;
+                case 5: tempString = "Three of a Kind"; break;
+                case 4: tempString = "Straight"; break;
+                case 3: tempString = "Flush"; break;
+                case 2: tempString = "Pair"; break;
+                default: tempString = "High Card"; break;
+            }}
+
+            else{switch(tempRank.getHandRank()){
+                case 10: tempString = "Royal Flush"; break;
+                case 9: tempString = "Straight Flush"; break;
+                case 8: tempString = "Four of a Kind"; break;
+                case 7: tempString = "Full House"; break;
+                case 6: tempString = "Flush"; break;
+                case 5: tempString = "Straight"; break;
+                case 4: tempString = "Three of a Kind"; break;
+                case 3: tempString = "Two Pair"; break;
+                case 2: tempString = "Pair"; break;
+                default: tempString = "High Card"; break;}}
+
+            decisionView.append("\nBest Hand:" + tempString);
+
+
         }
 
 
@@ -365,40 +421,24 @@ public class GameActivity extends AppCompatActivity {
         ArrayList<Player> tempPlayerList = controller.getAllPlayers();
 
         if(cardsInHand >= 1 ){
-            player1card1.setImageDrawable(tempPlayerList.get(0).getHand().get(0).getFaceUpCard()); // In front of Player 1
-            player2card1.setImageDrawable(tempPlayerList.get(1).getHand().get(0).getFaceUpCard()); // In front of Player 2
-            player3card1.setImageDrawable(tempPlayerList.get(2).getHand().get(0).getFaceUpCard()); // In front of Player 3
-            player4card1.setImageDrawable(tempPlayerList.get(3).getHand().get(0).getFaceUpCard()); // In front of Player 4
+            player1card1.setImageDrawable(tempPlayerList.get(0).getHand().get(0).getCardImage(showCards)); // In front of Player 1
+            player2card1.setImageDrawable(tempPlayerList.get(1).getHand().get(0).getCardImage(showCards)); // In front of Player 2
+            player3card1.setImageDrawable(tempPlayerList.get(2).getHand().get(0).getCardImage(showCards)); // In front of Player 3
+            player4card1.setImageDrawable(tempPlayerList.get(3).getHand().get(0).getCardImage(showCards)); // In front of Player 4
         }
         if(cardsInHand >= 2 ){
-            player1card2.setImageDrawable(tempPlayerList.get(0).getHand().get(1).getFaceUpCard()); // In front of Player 1
-            player2card2.setImageDrawable(tempPlayerList.get(1).getHand().get(1).getFaceUpCard()); // In front of Player 2
-            player3card2.setImageDrawable(tempPlayerList.get(2).getHand().get(1).getFaceUpCard()); // In front of Player 3
-            player4card2.setImageDrawable(tempPlayerList.get(3).getHand().get(1).getFaceUpCard()); // In front of Player 4
+            player1card2.setImageDrawable(tempPlayerList.get(0).getHand().get(1).getCardImage(showCards)); // In front of Player 1
+            player2card2.setImageDrawable(tempPlayerList.get(1).getHand().get(1).getCardImage(showCards)); // In front of Player 2
+            player3card2.setImageDrawable(tempPlayerList.get(2).getHand().get(1).getCardImage(showCards)); // In front of Player 3
+            player4card2.setImageDrawable(tempPlayerList.get(3).getHand().get(1).getCardImage(showCards)); // In front of Player 4
         }
         if(cardsInHand >= 3){
-            player1card3.setImageDrawable(tempPlayerList.get(0).getHand().get(2).getFaceUpCard()); // In front of Player 1
-            player2card3.setImageDrawable(tempPlayerList.get(1).getHand().get(2).getFaceUpCard()); // In front of Player 2
-            player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getFaceUpCard()); // In front of Player 3
-            player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getFaceUpCard()); // In front of Player 4
+            player1card3.setImageDrawable(tempPlayerList.get(0).getHand().get(2).getCardImage(showCards)); // In front of Player 1
+            player2card3.setImageDrawable(tempPlayerList.get(1).getHand().get(2).getCardImage(showCards)); // In front of Player 2
+            player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getCardImage(showCards)); // In front of Player 3
+            player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getCardImage(showCards)); // In front of Player 4
 
-            //ArrayList<Player> winnerList = controller.rankPlayers();
-            /*
-            String tempString;
-            Player winner = winnerList.get(0);
-            Rank tempRank = winner.getRank();
 
-            switch(tempRank.getHandRank()){
-                case 6: tempString = "Straight Flush"; break;
-                case 5: tempString = "Three of a Kind"; break;
-                case 4: tempString = "Straight"; break;
-                case 3: tempString = "Flush"; break;
-                case 2: tempString = "Pair"; break;
-                default: tempString = "High Card"; break;
-            }
-
-            decisionView.append("\nBest Hand:" + tempString);
-            */
             }
 
     }

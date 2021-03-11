@@ -49,6 +49,16 @@ public class Card implements Comparable<Card> {
         this.faceDownCard = faceDownCard;
     }
 
+
+    public Drawable getCardImage(Boolean showCard){
+        if(showCard){
+            return faceUpCard;
+        }
+        else{
+            return faceDownCard;
+        }
+    }
+
     @Override
     public int compareTo(Card other) {
         if(this.getValue() > other.getValue()) {
