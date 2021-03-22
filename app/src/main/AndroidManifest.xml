@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PokerWheel">
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".WelcomeActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,10 +21,15 @@
         <activity
             android:name=".GameActivity"
             android:screenOrientation="landscape">
-
         </activity>
-        <activity android:name=".InstructionsActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
+
+        <activity android:name=".InstructionsActivity"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity android:name=".SettingsActivity"
+            android:screenOrientation="landscape">
+        </activity>
 
     </application>
 
