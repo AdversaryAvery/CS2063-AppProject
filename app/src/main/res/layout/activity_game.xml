@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/first"
     tools:context=".GameActivity">
 
     <github.hellocsl.cursorwheel.CursorWheelLayout
@@ -38,7 +39,9 @@
         android:layout_marginEnd="-11dp"
         android:layout_marginBottom="14dp"
         android:layout_toStartOf="@+id/wheel_image"
-        android:text="@string/button_turn" />
+        android:text="@string/button_turn"
+        android:textColor="#008080"
+        app:backgroundTint="@color/black" />/>
 
     <TextView
         android:id="@+id/timer"
@@ -52,8 +55,8 @@
         android:textSize="24sp"
         android:visibility="visible"
         android:textStyle="bold"
-        android:textColor="#1991D0"
-        android:drawableTop="@drawable/ic_timer"/>
+        android:textColor="@color/black"/>
+<!--        app:drawableTopCompat="@drawable/ic_timer" />-->
 
     <ImageView
         android:id="@+id/UL"
@@ -101,4 +104,206 @@
         android:layout_marginBottom="40dp"
         android:contentDescription="@string/dr_card_desc"
         android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player1name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="121dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 1"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
+
+    <ImageView
+        android:id="@+id/player1card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player1name"
+        android:layout_alignTop="@+id/player1name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player1card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player1name"
+        android:layout_alignTop="@+id/player1name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player1card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player1name"
+        android:layout_alignTop="@+id/player1name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player2name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="-350dp"
+        android:layout_marginBottom="122dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 2"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
+
+    <ImageView
+        android:id="@+id/player2card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player2name"
+        android:layout_alignTop="@+id/player2name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player2card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player2name"
+        android:layout_alignTop="@+id/player2name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player2card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player2name"
+        android:layout_alignTop="@+id/player2name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player3name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="-350dp"
+        android:layout_marginBottom="-93dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 3"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
+
+    <ImageView
+        android:id="@+id/player3card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player3name"
+        android:layout_alignTop="@+id/player3name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player3card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player3name"
+        android:layout_alignTop="@+id/player3name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player3card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player3name"
+        android:layout_alignTop="@+id/player3name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/player4name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/UL"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="-93dp"
+        android:layout_toStartOf="@+id/UL"
+        android:text="Player 4"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
+
+    <ImageView
+        android:id="@+id/player4card1"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player4name"
+        android:layout_alignTop="@+id/player4name"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="44dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player4card2"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player4name"
+        android:layout_alignTop="@+id/player4name"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="92dp"
+        android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/player4card3"
+        android:layout_width="40dp"
+        android:layout_height="72dp"
+        android:layout_alignStart="@+id/player4name"
+        android:layout_alignTop="@+id/player4name"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="140dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/decisionView"
+        android:layout_width="291dp"
+        android:layout_height="68dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="220dp"
+        android:layout_marginEnd="220dp"
+        android:layout_marginBottom="-12dp"
+        android:minWidth="60dp"
+        android:text="Your Decision:"
+        android:textAlignment="textStart"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
+
 </RelativeLayout>

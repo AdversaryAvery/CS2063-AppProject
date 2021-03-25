@@ -1,0 +1,117 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/first"
+    android:gravity="center_vertical|center_horizontal"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Game Settings"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:translationY="210dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/setting1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting1"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:translationX="-110dp"
+        android:translationY="250dp"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#CCCCCC"
+        android:ems="5"
+        android:inputType="number"
+        android:translationX="100dp"
+        android:translationY="230dp"
+        android:saveEnabled="true">
+    </EditText>
+
+    <TextView
+        android:id="@+id/setting2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting2"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:translationX="-90dp"
+        android:translationY="280dp"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#CCCCCC"
+        android:ems="5"
+        android:inputType="number"
+        android:translationX="100dp"
+        android:translationY="255dp">
+    </EditText>
+
+    <TextView
+        android:id="@+id/setting3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setting3"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:translationX="-100dp"
+        android:translationY="300dp"
+        android:visibility="visible" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#CCCCCC"
+        android:ems="5"
+        android:inputType="text"
+        android:translationX="100dp"
+        android:translationY="275dp"
+        android:autofillHints="yes or no">
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="280dp"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/back"
+        android:textColor="@color/black"
+        android:theme="@style/ButtonStyle"
+        android:translationX="-120dp"
+        android:translationY="70dp"
+        app:backgroundTint="@color/white" />
+
+    <Button
+        android:id="@+id/savebtn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginTop="280dp"
+        android:background="@drawable/rounded_corner"
+        android:text="Save"
+        android:textColor="@color/black"
+        android:theme="@style/ButtonStyle"
+        android:translationX="110dp"
+        android:translationY="-250dp"
+        app:backgroundTint="@color/white" />
+
+</LinearLayout>

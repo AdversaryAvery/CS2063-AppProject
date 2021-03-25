@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,32 +42,97 @@ public class GameActivity extends AppCompatActivity {
     private Button endTurnButton;
     private CountDownTimer roundTimer;
 
+    //Configurable Values
+    private int numberOfRounds;
+    private Boolean showCards;
+    private Boolean startWithCards;
+    private int numberOfCards;
+    //
+
+    TextView decisionView;
+    ImageView cardUpLeft;
+    ImageView cardUpRight;
+    ImageView cardDownLeft;
+    ImageView cardDownRight;
+
+    ImageView player1card1;
+    ImageView player1card2;
+    ImageView player1card3;
+
+    ImageView player2card1;
+    ImageView player2card2;
+    ImageView player2card3;
+
+    ImageView player3card1;
+    ImageView player3card2;
+    ImageView player3card3;
+
+    ImageView player4card1;
+    ImageView player4card2;
+    ImageView player4card3;
+
+    TextView player1name;
+    TextView player2name;
+    TextView player3name;
+    TextView player4name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //Load Values from preferences
+
+        numberOfRounds = 3;
+        numberOfCards = 3;
+        showCards = true;
+        startWithCards = false;
+
+
         Log.i(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
         Log.i(TAG, "after called");
 //        Create/Instantiate game controller
         controller = new GameController(getResources());
 //        Set num of rounds 3
-        controller.setRoundNum(3);
+
+        //Load Round Number from User Preferences
+        // int temp = pref.
+        controller.setRoundNum(numberOfRounds);
 //        Create Notification Channel
         createNotificationChannel(this);
 //        Set up gestureDetector to use swipe gestureListener
         swipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
-        controller.assignCards2Wheel();
-        ArrayList<Card> wheelHand = controller.getWheel();
-        ImageView cardUpLeft = (ImageView) findViewById(R.id.UL);
-        ImageView cardUpRight = (ImageView) findViewById(R.id.UR);
-        ImageView cardDownLeft = (ImageView) findViewById(R.id.DL);
-        ImageView cardDownRight = (ImageView) findViewById(R.id.DR);
 
-        cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard());
-        cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard());
-        cardDownLeft.setImageDrawable(wheelHand.get(2).getFaceUpCard());
-        cardDownRight.setImageDrawable(wheelHand.get(3).getFaceUpCard());
+
+        cardUpLeft = (ImageView) findViewById(R.id.UL);
+        cardUpRight = (ImageView) findViewById(R.id.UR);
+        cardDownLeft = (ImageView) findViewById(R.id.DL);
+        cardDownRight = (ImageView) findViewById(R.id.DR);
+
+        player1card1 = findViewById(R.id.player1card1);
+        player1card2 = findViewById(R.id.player1card2);
+        player1card3 = findViewById(R.id.player1card3);
+
+        player2card1 = findViewById(R.id.player2card1);
+        player2card2 = findViewById(R.id.player2card2);
+        player2card3 = findViewById(R.id.player2card3);
+
+        player3card1 = findViewById(R.id.player3card1);
+        player3card2 = findViewById(R.id.player3card2);
+        player3card3 = findViewById(R.id.player3card3);
+
+        player4card1 = findViewById(R.id.player4card1);
+        player4card2 = findViewById(R.id.player4card2);
+        player4card3 = findViewById(R.id.player4card3);
+
+        decisionView = findViewById(R.id.decisionView);
+
+        player1name = findViewById(R.id.player1name);
+        player2name = findViewById(R.id.player2name);
+        player3name = findViewById(R.id.player3name);
+        player4name = findViewById(R.id.player4name);
 
         ArrayList<Player> players = new ArrayList<Player>();
 //        Real game code
@@ -79,7 +145,12 @@ public class GameActivity extends AppCompatActivity {
         players.add(new AIPlayer());
         controller.setAllPlayers(players);
 
+        if(startWithCards){
+            controller.startingCards(numberOfCards);
+        }
+
         endTurnButton = findViewById(R.id.turnButton);
+
         endTurnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,27 +159,8 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        TextView timer = findViewById(R.id.timer);
-
-        long duration = TimeUnit.MINUTES.toMillis(1);
-        roundTimer = new  CountDownTimer(duration, 1000){
-            @Override
-            public void onTick(long l){
-                String sDuration = String.format(Locale.ENGLISH, "%02d : %02d"
-                        , TimeUnit.MILLISECONDS.toMinutes(l)
-                        , TimeUnit.MILLISECONDS.toSeconds(l) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
-                timer.setText(sDuration);
-            }
-
-            @Override
-            public void onFinish(){
-                timer.setVisibility(View.GONE);
-                endPlayerTurn();
-                Toast.makeText(getApplicationContext(), "Timer has ended", Toast.LENGTH_LONG).show();
-            }
-        };
-        roundTimer.start();
+        // Round Logic Starts Here
+        startRound();
 
     }
 
@@ -122,7 +174,7 @@ public class GameActivity extends AppCompatActivity {
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "SWIPE DETECTED";
         private int swipeCount= 0;
-        private int sensitivity = 10;
+        private int sensitivity = 2;
         @Override
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
@@ -167,6 +219,8 @@ public class GameActivity extends AppCompatActivity {
 //              Show notification
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
+        controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() -1);
+        decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
 
@@ -185,6 +239,8 @@ public class GameActivity extends AppCompatActivity {
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
 
+        controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() + 1);
+        decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
     private void createNotificationChannel(Context context) {
@@ -203,11 +259,11 @@ public class GameActivity extends AppCompatActivity {
 //        End Round for all players
 //        Stop and Remove Timer
         TextView timer = findViewById(R.id.timer);
-        timer.setVisibility(View.INVISIBLE);
+        //timer.setVisibility(View.INVISIBLE);
         roundTimer.cancel();
 //        Remove button
         Button bttn = findViewById(R.id.turnButton);
-        bttn.setVisibility(View.INVISIBLE);
+       // bttn.setVisibility(View.INVISIBLE);
 //        This is only done for prototype
         ArrayList<Player> players = controller.getAllPlayers();
         for (Player p : players){
@@ -224,5 +280,168 @@ public class GameActivity extends AppCompatActivity {
 //              Show notification
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
+        endRound();
+    }
+
+    public void startRound(){
+
+        player1name.setText("Player 1");
+        player2name.setText("Player 2");
+        player3name.setText("Player 3");
+        player4name.setText("Player 4");
+
+        TextView timer = findViewById(R.id.timer);
+
+        endTurnButton.setText("End Turn");
+        endTurnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "endTurnButton onClick() called");
+                endPlayerTurn();
+            }
+        });
+
+        long duration = TimeUnit.MINUTES.toMillis(1);
+        roundTimer = new  CountDownTimer(duration, 1000){
+            @Override
+            public void onTick(long l){
+                String sDuration = String.format(Locale.ENGLISH, "%02d : %02d"
+                        , TimeUnit.MILLISECONDS.toMinutes(l)
+                        , TimeUnit.MILLISECONDS.toSeconds(l) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l)));
+                timer.setText(sDuration);
+            }
+
+            @Override
+            public void onFinish(){
+                //timer.setVisibility(View.GONE);
+                endPlayerTurn();
+                Toast.makeText(getApplicationContext(), "Timer has ended", Toast.LENGTH_LONG).show();
+            }
+        };
+        roundTimer.start();
+
+        ArrayList<Card> wheelHand = controller.getWheel();
+        if(startWithCards){
+            controller.donations2Wheel();
+        }
+
+        else{
+        controller.assignCards2Wheel();
+        }
+
+        cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard()); // In front of Player 1
+        cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
+        cardDownRight.setImageDrawable(wheelHand.get(2).getFaceUpCard()); // In front of Player 3
+        cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
+
+        controller.startRound();
+        decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
+    }
+
+    public void endRound(){
+        if(controller.getRoundNum() > 0){
+        controller.sumAllDecisions();
+        decisionView.setText("Sum of Decisions:" + String.valueOf(controller.getSumOfTurns()));
+        controller.shiftWheel();
+
+        ArrayList<Player> tempPlayerList = controller.getAllPlayers();
+
+        player1name.append(": " + String.valueOf(tempPlayerList.get(0).getTurnDecision()));
+        player2name.append(": " + String.valueOf(tempPlayerList.get(1).getTurnDecision()));
+        player3name.append(": " + String.valueOf(tempPlayerList.get(2).getTurnDecision()));
+        player4name.append(": " + String.valueOf(tempPlayerList.get(3).getTurnDecision()));
+
+
+
+
+
+        controller.setRoundNum(controller.getRoundNum() - 1);
+            Log.i("Post Round","Before Round" + String.valueOf(controller.getRoundNum()));
+            postRound();
+        }
+        else{
+            Log.i("Post Game","Start Ranking");
+            ArrayList<Player> winnerList = controller.rankPlayers(numberOfCards,numberOfRounds);
+
+            String tempString;
+            Player winner = winnerList.get(0);
+            Rank tempRank = winner.getRank();
+
+            if(numberOfCards == 3){
+            switch(tempRank.getHandRank()){
+                case 6: tempString = "Straight Flush"; break;
+                case 5: tempString = "Three of a Kind"; break;
+                case 4: tempString = "Straight"; break;
+                case 3: tempString = "Flush"; break;
+                case 2: tempString = "Pair"; break;
+                default: tempString = "High Card"; break;
+            }}
+
+            else{switch(tempRank.getHandRank()){
+                case 10: tempString = "Royal Flush"; break;
+                case 9: tempString = "Straight Flush"; break;
+                case 8: tempString = "Four of a Kind"; break;
+                case 7: tempString = "Full House"; break;
+                case 6: tempString = "Flush"; break;
+                case 5: tempString = "Straight"; break;
+                case 4: tempString = "Three of a Kind"; break;
+                case 3: tempString = "Two Pair"; break;
+                case 2: tempString = "Pair"; break;
+                default: tempString = "High Card"; break;}}
+
+            decisionView.append("\nBest Hand:" + tempString);
+
+
+        }
+
+
+    }
+
+
+    void postRound(){
+        endTurnButton.setText("Start Round");
+        endTurnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "endTurnButton onClick() called");
+                startRound();
+            }
+        });
+        ArrayList<Card> wheelHand = controller.getWheel();
+
+
+
+        cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard()); // In front of Player 1
+        cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
+        cardDownRight.setImageDrawable(wheelHand.get(2).getFaceUpCard()); // In front of Player 3
+        cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
+
+        controller.assignCards2Players();
+
+        int cardsInHand = 3 - controller.getRoundNum();
+        ArrayList<Player> tempPlayerList = controller.getAllPlayers();
+
+        if(cardsInHand >= 1 ){
+            player1card1.setImageDrawable(tempPlayerList.get(0).getHand().get(0).getCardImage(showCards)); // In front of Player 1
+            player2card1.setImageDrawable(tempPlayerList.get(1).getHand().get(0).getCardImage(showCards)); // In front of Player 2
+            player3card1.setImageDrawable(tempPlayerList.get(2).getHand().get(0).getCardImage(showCards)); // In front of Player 3
+            player4card1.setImageDrawable(tempPlayerList.get(3).getHand().get(0).getCardImage(showCards)); // In front of Player 4
+        }
+        if(cardsInHand >= 2 ){
+            player1card2.setImageDrawable(tempPlayerList.get(0).getHand().get(1).getCardImage(showCards)); // In front of Player 1
+            player2card2.setImageDrawable(tempPlayerList.get(1).getHand().get(1).getCardImage(showCards)); // In front of Player 2
+            player3card2.setImageDrawable(tempPlayerList.get(2).getHand().get(1).getCardImage(showCards)); // In front of Player 3
+            player4card2.setImageDrawable(tempPlayerList.get(3).getHand().get(1).getCardImage(showCards)); // In front of Player 4
+        }
+        if(cardsInHand >= 3){
+            player1card3.setImageDrawable(tempPlayerList.get(0).getHand().get(2).getCardImage(showCards)); // In front of Player 1
+            player2card3.setImageDrawable(tempPlayerList.get(1).getHand().get(2).getCardImage(showCards)); // In front of Player 2
+            player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getCardImage(showCards)); // In front of Player 3
+            player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getCardImage(showCards)); // In front of Player 4
+
+
+            }
+
     }
 }
