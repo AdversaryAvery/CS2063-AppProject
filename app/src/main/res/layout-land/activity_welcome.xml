@@ -1,0 +1,67 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+    android:gravity="center_vertical|center_horizontal">
+
+    <!--        android:textStyle="bold" />-->
+
+    <!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="173dp"-->
+<!--        android:gravity="center|top"-->
+<!--        android:text="@string/welcome"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="23sp" />-->
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="220dp"
+        android:layout_height="269dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="100dp"
+        android:translationY="60dp"
+        app:srcCompat="@drawable/logo" />
+
+    <Button
+        android:id="@+id/btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/playWithAI"
+        android:textColor="@color/black"
+        android:theme="@style/ButtonStyle"
+        android:translationX="-180dp"
+        android:translationY="-12dp"
+        app:backgroundTint="#FFF8C6" />
+
+    <Button
+        android:id="@+id/btnInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/instructions"
+        android:textColor="@color/black"
+        android:theme="@style/ButtonStyle"
+        android:translationX="15dp"
+        android:translationY="-65dp"
+        app:backgroundTint="#FFF8C6" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="150dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/settings"
+        android:textColor="@color/black"
+        android:theme="@style/ButtonStyle"
+        android:translationX="210dp"
+        android:translationY="-120dp"
+        app:backgroundTint="#FFF8C6" />
+
+</LinearLayout>

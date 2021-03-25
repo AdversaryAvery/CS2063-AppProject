@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/first"
     tools:context=".GameActivity">
 
     <github.hellocsl.cursorwheel.CursorWheelLayout
@@ -38,7 +39,9 @@
         android:layout_marginEnd="-11dp"
         android:layout_marginBottom="14dp"
         android:layout_toStartOf="@+id/wheel_image"
-        android:text="@string/button_turn" />
+        android:text="@string/button_turn"
+        android:textColor="#008080"
+        app:backgroundTint="@color/black" />/>
 
     <TextView
         android:id="@+id/timer"
@@ -52,8 +55,8 @@
         android:textSize="24sp"
         android:visibility="visible"
         android:textStyle="bold"
-        android:textColor="#1991D0"
-        app:drawableTopCompat="@drawable/ic_timer" />
+        android:textColor="@color/black"/>
+<!--        app:drawableTopCompat="@drawable/ic_timer" />-->
 
     <ImageView
         android:id="@+id/UL"
@@ -110,7 +113,10 @@
         android:layout_marginEnd="140dp"
         android:layout_marginBottom="121dp"
         android:layout_toStartOf="@+id/UL"
-        android:text="Player 1" />
+        android:text="Player 1"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
 
     <ImageView
         android:id="@+id/player1card1"
@@ -153,7 +159,10 @@
         android:layout_marginEnd="-350dp"
         android:layout_marginBottom="122dp"
         android:layout_toStartOf="@+id/UL"
-        android:text="Player 2" />
+        android:text="Player 2"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
 
     <ImageView
         android:id="@+id/player2card1"
@@ -196,7 +205,10 @@
         android:layout_marginEnd="-350dp"
         android:layout_marginBottom="-93dp"
         android:layout_toStartOf="@+id/UL"
-        android:text="Player 3" />
+        android:text="Player 3"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
 
     <ImageView
         android:id="@+id/player3card1"
@@ -239,7 +251,10 @@
         android:layout_marginEnd="140dp"
         android:layout_marginBottom="-93dp"
         android:layout_toStartOf="@+id/UL"
-        android:text="Player 4" />
+        android:text="Player 4"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15dp"/>
 
     <ImageView
         android:id="@+id/player4card1"
@@ -287,6 +302,8 @@
         android:minWidth="60dp"
         android:text="Your Decision:"
         android:textAlignment="textStart"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
 
 </RelativeLayout>
