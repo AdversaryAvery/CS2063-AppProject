@@ -13,6 +13,8 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -23,70 +25,72 @@ public class WelcomeActivity extends AppCompatActivity {
 
     private Button playGameButton;
     private Button instructionsButton;
-    private Button signInButton;
+    private Button startRoomButton;
+    private Button JoinRoomButton;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate called");
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_welcome);
+            Log.i(TAG, "onCreate called");
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_welcome);
 
-        instructionsButton = findViewById(R.id.btnInstructions);
-        instructionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, InstructionsActivity.class);
-                startActivity(intent);
+            instructionsButton = findViewById(R.id.btnInstructions);
+            instructionsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(WelcomeActivity.this, InstructionsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+            playGameButton = findViewById(R.id.btnBack);
+            playGameButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(WelcomeActivity.this, GameActivity.class);
+                    Log.i(TAG, "starting Game Activity");
+                    startActivity(intent);
+                }
+            });
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("message");
+            signInButton = findViewById(R.id.gameLink);
+            signInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
+                            .setAndroidPackageName(getPackageName(),
+                                    true, /* install if not available? */
+                                    null   /* minimum app version */)
+                            .setHandleCodeInApp(true)
+                            .setUrl("https://fire.example.com/emailSignInLink")
+                            .build();
+                    startActivityForResult(AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().enableEmailLinkSignIn().
+                                    setActionCodeSettings(actionCodeSettings).build())).build(), 1234);
+                }
+            });
+
+            if (AuthUI.canHandleIntent(getIntent())) {
+                String link = getIntent().getData().toString();
+
+                List<AuthUI.IdpConfig> providers = Arrays.asList(
+                        new AuthUI.IdpConfig.EmailBuilder().build());
+
+                Log.d(TAG, "got an email link: " + link);
+
+                if (link != null) {
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                                    .setEmailLink(link)
+                                    .setAvailableProviders(providers)
+                                    .build(),
+                            12345);
+                }
             }
-        });
-
-        playGameButton = findViewById(R.id.btnBack);
-        playGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, GameActivity.class);
-                Log.i(TAG, "starting Game Activity");
-                startActivity(intent);
-            }
-        });
-
-        signInButton = findViewById(R.id.gameLink);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                        .setAndroidPackageName(getPackageName(),
-                                true, /* install if not available? */
-                                null   /* minimum app version */)
-                        .setHandleCodeInApp(true)
-                        .setUrl("https://fire.example.com/emailSignInLink")
-                        .build();
-                startActivityForResult(AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().enableEmailLinkSignIn().
-                                setActionCodeSettings(actionCodeSettings).build())).build(), 1234);
-            }
-        });
-
-        if (AuthUI.canHandleIntent(getIntent())) {
-            String link = getIntent().getData().toString();
-
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build());
-
-            Log.d(TAG, "got an email link: " + link);
-
-            if (link != null) {
-                startActivityForResult(
-                        AuthUI.getInstance()
-                                .createSignInIntentBuilder()
-                                .setEmailLink(link)
-                                .setAvailableProviders(providers)
-                                .build(),
-                        12345);
-            }
-        }
     }
 
     @Override
