@@ -233,9 +233,9 @@ public class GameController {
         ShuffleDeck();
     }
 
-    public void startRound(){
+    public void startRound(int movesPerRound){
         for(Player player: allPlayers){
-            player.roundStart(-1, 1);
+            player.roundStart(-movesPerRound, movesPerRound);
         }
     }
 }

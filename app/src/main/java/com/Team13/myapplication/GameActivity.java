@@ -12,6 +12,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
@@ -51,6 +52,7 @@ public class GameActivity extends AppCompatActivity {
     private Boolean showCards;
     private Boolean startWithCards;
     private int numberOfCards;
+    private int movesPerRound;
     //
 
     TextView decisionView;
@@ -69,13 +71,17 @@ public class GameActivity extends AppCompatActivity {
     TextView player3name;
     TextView player4name;
 
+    private SharedPreferences sharedPreferences;
+    private final String pref = "sharedPreferences";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //Load Values from preferences
-
-        numberOfRounds = 3;
-        numberOfCards = 3;
+        sharedPreferences = getSharedPreferences(pref, Context.MODE_PRIVATE);
+        numberOfRounds = sharedPreferences.getInt("Rounds",3);
+        numberOfCards = sharedPreferences.getInt("Rounds",3);
+        movesPerRound = sharedPreferences.getInt("MovesPerRound",1);
         showCards = true;
         startWithCards = false;
 
@@ -214,7 +220,7 @@ public class GameActivity extends AppCompatActivity {
 //              Show notification
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
-        controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() -1);
+        controller.getAllPlayers().get(0).decrementDecision(movesPerRound);
         decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
@@ -234,7 +240,7 @@ public class GameActivity extends AppCompatActivity {
         NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
         nManager.notify(NOTIFICATION_ID, builder.build());
 
-        controller.getAllPlayers().get(0).setTurnDecision(controller.getAllPlayers().get(0).getTurnDecision() + 1);
+        controller.getAllPlayers().get(0).incrementDecision(movesPerRound);
         decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 
@@ -330,7 +336,7 @@ public class GameActivity extends AppCompatActivity {
         cardDownRight.setImageDrawable(wheelHand.get(2).getFaceUpCard()); // In front of Player 3
         cardDownLeft.setImageDrawable(wheelHand.get(3).getFaceUpCard()); // In front of Player 4
 
-        controller.startRound();
+        controller.startRound(movesPerRound);
         decisionView.setText("Your Decision: " + String.valueOf(controller.getAllPlayers().get(0).getTurnDecision()));
     }
 

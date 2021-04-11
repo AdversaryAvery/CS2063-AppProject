@@ -342,4 +342,11 @@ public class Player {
         hand.remove(donationCard);
         return tempCard;
     }
+
+    public void incrementDecision(int movesPerRound){
+        if(turnDecision < movesPerRound) turnDecision++;
+    }
+    public void decrementDecision(int movesPerRound){
+        if(turnDecision > -movesPerRound) turnDecision--;
+    }
 }
