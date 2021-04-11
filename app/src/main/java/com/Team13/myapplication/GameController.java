@@ -5,10 +5,15 @@ import android.graphics.drawable.Drawable;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GameController {
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
     private int roundNum;
     private float time;
     private int sumOfTurns;

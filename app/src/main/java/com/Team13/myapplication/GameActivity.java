@@ -1,5 +1,6 @@
 package com.Team13.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.solver.widgets.Guideline;
 import androidx.core.app.NotificationCompat;
@@ -24,19 +25,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class GameActivity extends AppCompatActivity {
     private GestureDetectorCompat swipeDetector;
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
     private static final String TAG = "GAME_ACTIVITY";
-    public static final String CHANNEL_ID = ".gameActivity";
-    public static final int NOTIFICATION_ID = 2;
     protected int finalDecision = 0;
-    private static final int maxSwipes = 3;
-    private ImageView card;
-    private int numPlayers = 4;
+    private int maxSwipes = 3;
+    private int numPlayers;
     private GameController controller;
     private Button endTurnButton;
     private CountDownTimer roundTimer;
@@ -46,13 +52,11 @@ public class GameActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        Log.i(TAG, "after called");
 //        Create/Instantiate game controller
         controller = new GameController(getResources());
 //        Set num of rounds 3
         controller.setRoundNum(3);
 //        Create Notification Channel
-        createNotificationChannel(this);
 //        Set up gestureDetector to use swipe gestureListener
         swipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
@@ -69,14 +73,38 @@ public class GameActivity extends AppCompatActivity {
         cardDownRight.setImageDrawable(wheelHand.get(3).getFaceUpCard());
 
         ArrayList<Player> players = new ArrayList<Player>();
-//        Real game code
-//        for (int i=0 ; i < numPlayers; i++) {
-//            players.add(new Player());
-//        }
-        players.add(new Player());
-        players.add(new AIPlayer());
-        players.add(new AIPlayer());
-        players.add(new AIPlayer());
+
+        dbRef = database.getReference("settings");
+        dbRef.child("numPlayers").get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Log.i(TAG, "retrieved numPlayer value");
+                        numPlayers = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 2;
+                    }
+                });
+        dbRef.child("maxSwipes").get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Log.i(TAG, "retrieved maxSwipes value");
+                        maxSwipes = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 3;
+                    }
+                });
+
+
+        String gameMode = getIntent().getStringExtra("game mode");
+        if (gameMode.matches("multi")) {
+            for (int i=0 ; i < numPlayers; i++) {
+                players.add(new Player());
+            }
+        } else {
+            players.add(new Player());
+            players.add(new AIPlayer());
+            players.add(new AIPlayer());
+            players.add(new AIPlayer());
+        }
+
         controller.setAllPlayers(players);
 
         endTurnButton = findViewById(R.id.turnButton);
@@ -136,17 +164,7 @@ public class GameActivity extends AppCompatActivity {
                     swipeRight();
                 }
             } else {
-//              Build notification
-                NotificationCompat.Builder builder = new NotificationCompat
-                        .Builder(GameActivity.this, CHANNEL_ID)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("No More Moves")
-                        .setContentText("You have used all of your moves for this round")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setAutoCancel(true);
-//              Show notification
-                NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
-                nManager.notify(NOTIFICATION_ID, builder.build());
+                Toast.makeText(GameActivity.this, "No More Moves", Toast.LENGTH_SHORT).show();
             }
 
             return true;
@@ -156,48 +174,16 @@ public class GameActivity extends AppCompatActivity {
     private void swipeLeft() {
 //      Update player decision
         finalDecision++;
-//      Build notification
-        NotificationCompat.Builder builder = new NotificationCompat
-                .Builder(GameActivity.this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Moved Wheel Clockwise")
-                .setContentText("You have moved the wheel clockwise by one")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-//              Show notification
-        NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
-        nManager.notify(NOTIFICATION_ID, builder.build());
+        Toast.makeText(GameActivity.this, "Moved Wheel Clockwise", Toast.LENGTH_SHORT).show();
     }
 
 
     private void swipeRight() {
 //      Update player decision
         finalDecision--;
-//      Build notification
-        NotificationCompat.Builder builder = new NotificationCompat
-                .Builder(GameActivity.this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Moved Wheel Anti-Clockwise")
-                .setContentText("You have moved the wheel anti-clockwise by one")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-//              Show notification
-        NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
-        nManager.notify(NOTIFICATION_ID, builder.build());
-
+        Toast.makeText(GameActivity.this, "Moved Wheel Anti-Clockwise", Toast.LENGTH_SHORT).show();
     }
 
-    private void createNotificationChannel(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = context.getString(R.string.channel_name);
-            String description = context.getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 
     private void endPlayerTurn(){
 //        End Round for all players
@@ -213,16 +199,6 @@ public class GameActivity extends AppCompatActivity {
         for (Player p : players){
             p.endTurn();
         }
-//      Build notification
-        NotificationCompat.Builder builder = new NotificationCompat
-                .Builder(GameActivity.this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Ended Round")
-                .setContentText("The round has ended")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
-//              Show notification
-        NotificationManagerCompat nManager = NotificationManagerCompat.from(GameActivity.this);
-        nManager.notify(NOTIFICATION_ID, builder.build());
+        Toast.makeText(GameActivity.this, "Ended Round", Toast.LENGTH_SHORT).show();
     }
 }
