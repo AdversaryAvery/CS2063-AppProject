@@ -39,4 +39,5 @@ dependencies {
 
     //Add Library
     implementation 'github.hellocsl:CursorWheelLayout:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

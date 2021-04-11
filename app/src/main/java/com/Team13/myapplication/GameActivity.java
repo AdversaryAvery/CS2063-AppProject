@@ -5,6 +5,8 @@ import androidx.constraintlayout.solver.widgets.Guideline;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GestureDetectorCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,8 +19,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,21 +59,10 @@ public class GameActivity extends AppCompatActivity {
     ImageView cardDownLeft;
     ImageView cardDownRight;
 
-    ImageView player1card1;
-    ImageView player1card2;
-    ImageView player1card3;
-
-    ImageView player2card1;
-    ImageView player2card2;
-    ImageView player2card3;
-
-    ImageView player3card1;
-    ImageView player3card2;
-    ImageView player3card3;
-
-    ImageView player4card1;
-    ImageView player4card2;
-    ImageView player4card3;
+    RecyclerView player1cards;
+    RecyclerView player2cards;
+    RecyclerView player3cards;
+    RecyclerView player4cards;
 
     TextView player1name;
     TextView player2name;
@@ -111,21 +104,11 @@ public class GameActivity extends AppCompatActivity {
         cardDownLeft = (ImageView) findViewById(R.id.DL);
         cardDownRight = (ImageView) findViewById(R.id.DR);
 
-        player1card1 = findViewById(R.id.player1card1);
-        player1card2 = findViewById(R.id.player1card2);
-        player1card3 = findViewById(R.id.player1card3);
+        player1cards = findViewById(R.id.player1cards);
+        player2cards = findViewById(R.id.player2cards);
+        player3cards = findViewById(R.id.player3cards);
+        player4cards = findViewById(R.id.player4cards);
 
-        player2card1 = findViewById(R.id.player2card1);
-        player2card2 = findViewById(R.id.player2card2);
-        player2card3 = findViewById(R.id.player2card3);
-
-        player3card1 = findViewById(R.id.player3card1);
-        player3card2 = findViewById(R.id.player3card2);
-        player3card3 = findViewById(R.id.player3card3);
-
-        player4card1 = findViewById(R.id.player4card1);
-        player4card2 = findViewById(R.id.player4card2);
-        player4card3 = findViewById(R.id.player4card3);
 
         decisionView = findViewById(R.id.decisionView);
 
@@ -159,6 +142,18 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
+
+        player1cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
+        player2cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
+        player3cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
+        player4cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
+
+
+
+        player1cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(0).getHand(),true));
+        player2cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(1).getHand(), showCards));
+        player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
+        player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
         // Round Logic Starts Here
         startRound();
 
@@ -422,26 +417,19 @@ public class GameActivity extends AppCompatActivity {
         int cardsInHand = 3 - controller.getRoundNum();
         ArrayList<Player> tempPlayerList = controller.getAllPlayers();
 
-        if(cardsInHand >= 1 ){
-            player1card1.setImageDrawable(tempPlayerList.get(0).getHand().get(0).getCardImage(showCards)); // In front of Player 1
-            player2card1.setImageDrawable(tempPlayerList.get(1).getHand().get(0).getCardImage(showCards)); // In front of Player 2
-            player3card1.setImageDrawable(tempPlayerList.get(2).getHand().get(0).getCardImage(showCards)); // In front of Player 3
-            player4card1.setImageDrawable(tempPlayerList.get(3).getHand().get(0).getCardImage(showCards)); // In front of Player 4
-        }
-        if(cardsInHand >= 2 ){
-            player1card2.setImageDrawable(tempPlayerList.get(0).getHand().get(1).getCardImage(showCards)); // In front of Player 1
-            player2card2.setImageDrawable(tempPlayerList.get(1).getHand().get(1).getCardImage(showCards)); // In front of Player 2
-            player3card2.setImageDrawable(tempPlayerList.get(2).getHand().get(1).getCardImage(showCards)); // In front of Player 3
-            player4card2.setImageDrawable(tempPlayerList.get(3).getHand().get(1).getCardImage(showCards)); // In front of Player 4
-        }
-        if(cardsInHand >= 3){
-            player1card3.setImageDrawable(tempPlayerList.get(0).getHand().get(2).getCardImage(showCards)); // In front of Player 1
-            player2card3.setImageDrawable(tempPlayerList.get(1).getHand().get(2).getCardImage(showCards)); // In front of Player 2
-            player3card3.setImageDrawable(tempPlayerList.get(2).getHand().get(2).getCardImage(showCards)); // In front of Player 3
-            player4card3.setImageDrawable(tempPlayerList.get(3).getHand().get(2).getCardImage(showCards)); // In front of Player 4
+        player1cards.setAdapter(null);
+        player2cards.setAdapter(null);
+        player3cards.setAdapter(null);
+        player4cards.setAdapter(null);
+
+        player1cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(0).getHand(),true));
+        player2cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(1).getHand(), showCards));
+        player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
+        player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
 
 
             }
 
     }
-}
+
+
