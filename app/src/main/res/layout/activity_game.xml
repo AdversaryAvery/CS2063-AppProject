@@ -43,6 +43,19 @@
         android:textColor="#008080"
         app:backgroundTint="@color/black" />/>
 
+    <Button
+        android:id="@+id/quitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/wheel_image"
+        android:layout_marginEnd="-11dp"
+        android:layout_marginBottom="14dp"
+        android:layout_toStartOf="@+id/wheel_image"
+        android:text="Quit"
+        android:textColor="#008080"
+        android:translationX="340dp"
+        app:backgroundTint="@color/black" />/>
+
     <TextView
         android:id="@+id/timer"
         android:layout_width="148dp"
