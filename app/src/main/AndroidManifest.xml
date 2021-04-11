@@ -9,18 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PokerWheel">
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".WelcomeActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
         <activity
             android:name=".GameActivity"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".InstructionsActivity"></activity>
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity android:name=".InstructionsActivity"
+            android:screenOrientation="landscape">
+        </activity>
+
+        <activity android:name=".SettingsActivity"
+            android:screenOrientation="landscape">
+        </activity>
+
         <activity android:name=".MultiActivity"></activity>
+
         <activity android:name=".RoomActivity"></activity>
     </application>
 

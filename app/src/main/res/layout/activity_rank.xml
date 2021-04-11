@@ -3,16 +3,17 @@
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/first"
+    android:background="@drawable/background2"
     android:gravity="center_vertical|center_horizontal">
 
 
     <TextView
-        android:id="@+id/instruction1"
+        android:id="@+id/description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/rank_description"
         android:textColor="@color/white"
-        android:text="@string/instruction1" />
+        android:translationY="-100dp" />
 
     <Button
         android:id="@+id/btnBack"
@@ -24,6 +25,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginTop="280dp"
+        android:layout_marginRight="80dp"
         android:background="@drawable/rounded_corner"
         android:text="@string/back"
         android:textColor="@color/black"

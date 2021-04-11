@@ -15,7 +15,7 @@ import android.widget.Toast;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-public class InstructionsActivity extends AppCompatActivity {
+public class RankActivity extends AppCompatActivity {
     TextView timer;
     private Button backButton;
 
@@ -23,13 +23,13 @@ public class InstructionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_instructions);
+        setContentView(R.layout.activity_rank);
 
         backButton = findViewById(R.id.btnBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(InstructionsActivity.this, WelcomeActivity.class);
+                Intent intent = new Intent(RankActivity.this, WelcomeActivity.class);
                 startActivity(intent);
             }
         });

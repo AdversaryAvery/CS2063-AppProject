@@ -20,54 +20,48 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="220dp"
-        android:layout_height="314dp"
-        android:layout_marginBottom="100dp"
+        android:layout_height="269dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginBottom="100dp"
+        android:translationY="60dp"
         app:srcCompat="@drawable/logo" />
 
     <Button
-        android:id="@+id/single"
-        android:layout_margin="10dp"
+        android:id="@+id/btnBack"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
+        android:layout_margin="10dp"
         android:background="@drawable/rounded_corner"
         android:text="@string/playWithAI"
         android:textColor="@color/black"
         android:theme="@style/ButtonStyle"
+        android:translationX="-180dp"
+        android:translationY="-12dp"
         app:backgroundTint="#FFF8C6" />
 
     <Button
         android:id="@+id/btnInstructions"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:background="@drawable/rounded_corner"
         android:text="@string/instructions"
         android:textColor="@color/black"
         android:theme="@style/ButtonStyle"
+        android:translationX="15dp"
+        android:translationY="-65dp"
         app:backgroundTint="#FFF8C6" />
 
     <Button
-<<<<<<< HEAD
-        android:id="@+id/enterName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/rounded_corner"
-        android:text="@string/playWithOthers"
-=======
         android:id="@+id/btnSettings"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_height="43dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/rounded_corner"
         android:text="@string/settings"
->>>>>>> main
         android:textColor="@color/black"
         android:theme="@style/ButtonStyle"
+        android:translationX="210dp"
+        android:translationY="-120dp"
         app:backgroundTint="#FFF8C6" />
 
 </LinearLayout>
