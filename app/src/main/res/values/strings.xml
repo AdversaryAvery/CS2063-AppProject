@@ -20,9 +20,11 @@
 
     <string name="instructions">Instructions</string>
     <string name="back">Back</string>
-    <string name="instruction1">1) A timer will show how much time you have left to play\n\n2) You can swipe left or right to turn the wheel\n\n3) There are 3 rounds in total and you can swipe left/right max 3 times in each round (need to change)\n\n4) At the end of a round, choices of all the players are aggregated together and the wheel is turned the appropriate number of time\n\n5) Each player is awarded the card that ends up in front of them after the wheel is done turning\n\n6) After 5 rounds, the player with the best poker hand wins, using standard poker hands from Five-Card Draw</string>
-<!--    <string name="instruction2">2) You can swipe left or right to turn the wheel</string>-->
-<!--    <string name="instruction3">3) There are 5 rounds in total and you can swipe left/right max 3 times in each round</string>-->
-
-
+    <string name="instruction1">1) A timer will show how much time you have left to play\n</string>
+    <string name="instruction2">2) You can swipe left or right to turn the wheel\n</string>
+    <string name="instruction3">3) There are 5 rounds in total and you can swipe left/right max 3 times in each round\n</string>
+    <string name="playWithOthers">Play with Others</string>
+    <string name="enterName">Enter</string>
+    <string name="createRoom">Create Room</string>
+    <string name="roomText">Players in the room: </string>
 </resources>

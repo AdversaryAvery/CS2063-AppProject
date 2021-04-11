@@ -6,10 +6,15 @@ import android.util.Log;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GameController {
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
     private int roundNum;
     private float time;
