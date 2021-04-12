@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
     private int numPlayers;
     private GameController controller;
     private Button endTurnButton;
+    private Button quitButton;
     private CountDownTimer roundTimer;
 
     //Configurable Values
@@ -78,32 +79,39 @@ public class GameActivity extends AppCompatActivity {
     TextView player4name;
 
     private SharedPreferences sharedPreferences;
-    private final String pref = "sharedPreferences";
+    private static final String PREFS_FILE_NAME = "AppPrefs";
+    private static final String ROUND = "rounds per game";
+    private static final String MOVE = "moves per round";
+    private static final String CARD = "start with cards or not";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        Log.i(TAG, "onCreate called");
+        super.onCreate(savedInstanceState);
         //Load Values from preferences
-        sharedPreferences = getSharedPreferences(pref, Context.MODE_PRIVATE);
+        Log.i(TAG, "getting preferences");
+        sharedPreferences = getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
         numberOfRounds = sharedPreferences.getInt("Rounds",3);
         numberOfCards = sharedPreferences.getInt("Rounds",3);
         movesPerRound = sharedPreferences.getInt("MovesPerRound",1);
         showCards = true;
         startWithCards = false;
 
-
-        Log.i(TAG, "onCreate called");
-        super.onCreate(savedInstanceState);
+//        numberOfRounds = Integer.parseInt(sharedPreferences.getString(ROUND,"3"));
+//        movesPerRound = sharedPreferences.getInt(MOVE,1);
+//        numberOfCards = numberOfRounds;
+//        showCards = true;
+//        if(sharedPreferences.getString(CARD,"no").equalsIgnoreCase("no")){
+//            startWithCards = false;
+//        }
+//        else if(sharedPreferences.getString(CARD,"no").equalsIgnoreCase("yes")){
+//            startWithCards = true;
+//        }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 //        Create/Instantiate game controller
         controller = new GameController(getResources());
-//        Set num of rounds 3
-
-        //Load Round Number from User Preferences
-        // int temp = pref.
         controller.setRoundNum(numberOfRounds);
-//        Create Notification Channel
 //        Set up gestureDetector to use swipe gestureListener
         swipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
@@ -179,6 +187,17 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
+        quitButton = findViewById(R.id.quitButton);
+
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "quit onClick() called");
+                Intent intent = new Intent(GameActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         player1cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         player2cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         player3cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
@@ -190,6 +209,7 @@ public class GameActivity extends AppCompatActivity {
         player2cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(1).getHand(), showCards));
         player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
         player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
+
         // Round Logic Starts Here
         startRound();
 
@@ -259,6 +279,7 @@ public class GameActivity extends AppCompatActivity {
             p.endTurn();
         }
         Toast.makeText(GameActivity.this, "Ended Round", Toast.LENGTH_SHORT).show();
+        endRound();
     }
 
     public void startRound(){

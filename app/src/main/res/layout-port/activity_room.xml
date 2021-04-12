@@ -47,10 +47,20 @@
     <ListView
         android:id="@+id/roomList"
         android:layout_width="match_parent"
-        android:layout_height="303dp"
+        android:layout_height="250dp"
         android:background="#FDFDFD"
         android:textAlignment="center">
 
     </ListView>
+
+    <TextView
+        android:id="@+id/joinText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:text="@string/howToJoin"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp" />
 
 </LinearLayout>
