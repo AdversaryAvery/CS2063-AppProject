@@ -30,14 +30,14 @@ public class RoomActivity extends AppCompatActivity {
     private FirebaseDatabase database;
 
     private DatabaseReference roomPlayerRef;
-    private DatabaseReference dbRef;
     private DatabaseReference roomRef;
     private Button roomButton;
     private ListView roomListView;
     private ArrayList<String> roomList;
     private TextView playerCount;
+    private TextView joinText;
     private String playerName;
-    private int numPlayers;
+    private int numPlayers = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +51,10 @@ public class RoomActivity extends AppCompatActivity {
         roomButton = findViewById(R.id.roomButton);
         roomListView = findViewById(R.id.roomList);
         playerCount = findViewById(R.id.playerCount);
+        joinText = findViewById(R.id.joinText);
         roomList = new ArrayList<String>();
 
         playerName = gamePrefs.getString("playerName", "");
-        dbRef = database.getReference("settings");
-        dbRef.child("numPlayers").get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved numPlayer value");
-                        numPlayers = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 2;
-                    }
-                });
 
         setupRoomEventListener();
 
@@ -131,12 +123,12 @@ public class RoomActivity extends AppCompatActivity {
                 }
                 getRoomDisplay();
                 Log.i(TAG, "roomsListView updated" + roomList.size());
-//                if (roomList.size() == numPlayers) {
-//                    Log.i(TAG, "All players are in room ");
-//                    Intent intent = new Intent(RoomActivity.this, GameActivity.class);
-//                    intent.putExtra("game mode", "multi");
-//                    startActivity(intent);
-//                }
+                if (roomList.size() == numPlayers) {
+                    Log.i(TAG, "All players are in room ");
+                    Intent intent = new Intent(RoomActivity.this, GameActivity.class);
+                    intent.putExtra("game mode", "multi");
+                    startActivity(intent);
+                }
             }
 
             @Override
@@ -151,10 +143,12 @@ public class RoomActivity extends AppCompatActivity {
         if (roomList.size() < 1) {
             roomButton.setVisibility(View.VISIBLE);
             roomListView.setVisibility(View.GONE);
+            joinText.setVisibility(View.GONE);
             playerCount.setVisibility(View.GONE);
         } else {
             roomButton.setVisibility(View.GONE);
             roomListView.setVisibility(View.VISIBLE);
+            joinText.setVisibility(View.VISIBLE);
             playerCount.setVisibility(View.VISIBLE);
         }
     }

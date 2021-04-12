@@ -27,4 +27,5 @@
     <string name="enterName">Enter</string>
     <string name="createRoom">Create Room</string>
     <string name="roomText">Players in the room: </string>
+    <string name="howToJoin">Tap on a player in the room to join!</string>
 </resources>

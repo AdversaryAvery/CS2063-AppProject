@@ -35,7 +35,7 @@ public class MultiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multi);
 
         nameInput = findViewById(R.id.nameInput);
-        enterName = findViewById(R.id.enterName);
+        enterName = findViewById(R.id.multiple);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);

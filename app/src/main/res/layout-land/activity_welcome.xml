@@ -65,7 +65,7 @@
         app:backgroundTint="#FFF8C6" />
 
     <Button
-        android:id="@+id/enterName"
+        android:id="@+id/multiple"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
         android:background="@drawable/rounded_corner"
