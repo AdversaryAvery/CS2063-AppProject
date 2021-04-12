@@ -93,6 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
         String strValue1 = editText1.getText().toString();
         String strValue2 = editText2.getText().toString();
         String strValue3 = editText3.getText().toString();
+
 //        outState.putString("savedText1", strValue1);
 //        outState.putString("savedText2", strValue2);
 //        outState.putString("savedText3", strValue3);

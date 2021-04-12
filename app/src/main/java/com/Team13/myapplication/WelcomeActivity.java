@@ -11,11 +11,10 @@ import android.widget.Button;
 
 public class WelcomeActivity extends AppCompatActivity {
     private static final String TAG = "WELCOME_ACTIVITY";
-
-    private Button aiGameButton;
-    private Button multiGameButton;
     private Button instructionsButton;
     private Button settingsButton;
+    private Button aiGameButton;
+    private Button multiGameButton;
 
 
     @Override
@@ -44,6 +43,17 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
+        multiGameButton = findViewById(R.id.multiple);
+        multiGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, MultiActivity.class);
+                Log.i(TAG, "starting Multi Player Game Activity");
+                intent.putExtra("game mode", "multi");
+                startActivity(intent);
+            }
+        });
+
         aiGameButton = findViewById(R.id.single);
         aiGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,17 +64,5 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        multiGameButton = findViewById(R.id.enterName);
-        multiGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WelcomeActivity.this, MultiActivity.class);
-                Log.i(TAG, "starting Multi Player Game Activity");
-                startActivity(intent);
-            }
-        });
-
-
     }
 }

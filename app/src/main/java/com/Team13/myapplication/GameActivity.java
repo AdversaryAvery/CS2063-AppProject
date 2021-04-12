@@ -129,6 +129,8 @@ public class GameActivity extends AppCompatActivity {
 
         ArrayList<Player> players = new ArrayList<Player>();
 
+        database = FirebaseDatabase.getInstance();
+        SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);
         dbRef = database.getReference("settings");
         dbRef.child("numPlayers").get()
                 .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {

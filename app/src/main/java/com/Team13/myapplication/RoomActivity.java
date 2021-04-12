@@ -130,7 +130,7 @@ public class RoomActivity extends AppCompatActivity {
                     roomListView.setAdapter(adapter);
                 }
                 getRoomDisplay();
-                Log.i(TAG, "roomsListView updated" + roomList.size());
+                Log.i(TAG, "roomsListView updated" + roomList.size() + " " + numPlayers);
 //                if (roomList.size() == numPlayers) {
 //                    Log.i(TAG, "All players are in room ");
 //                    Intent intent = new Intent(RoomActivity.this, GameActivity.class);
