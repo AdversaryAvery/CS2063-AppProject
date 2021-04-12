@@ -45,8 +45,6 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         initSharedPreferences();
 
-        sharedPreferences = getSharedPreferences(pref, Context.MODE_PRIVATE);
-
         editText1 = (EditText) findViewById(R.id.editText1);
         editText2 = (EditText) findViewById(R.id.editText2);
         editText3 = (EditText) findViewById(R.id.editText3);
