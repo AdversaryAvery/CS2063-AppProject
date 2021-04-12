@@ -36,7 +36,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private static final String ROUND = "rounds per game";
     private static final String MOVE = "moves per round";
-    private static final String CARD = "start with cards or not";
+//    private static final String CARD = "start with cards or not";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +60,10 @@ public class SettingsActivity extends AppCompatActivity {
         numberPickerMoves.setMinValue(1);
         numberPickerMoves.setValue(readMovesFromSharedPreferences());
 
-        numberPickerCards = (NumberPicker) findViewById(R.id.numberPicker3);
-        numberPickerCards.setMaxValue(1);
-        numberPickerCards.setMinValue(0);
-        numberPickerCards.setDisplayedValues(readCardsFromSharedPreferences());
+//        numberPickerCards = (NumberPicker) findViewById(R.id.numberPicker3);
+//        numberPickerCards.setMaxValue(1);
+//        numberPickerCards.setMinValue(0);
+//        numberPickerCards.setDisplayedValues(readCardsFromSharedPreferences());
 
 
         numberPickerRounds.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -78,13 +78,13 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        numberPickerCards.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-//                System.out.println("new val is: "+newVal);
-//                System.out.println("answerforcard for new new val is: "+andwersForCard[newVal]);
-                writeCardsToSharedPreferences(andwersForCard[newVal]);
-            }
-        });
+//        numberPickerCards.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+////                System.out.println("new val is: "+newVal);
+////                System.out.println("answerforcard for new new val is: "+andwersForCard[newVal]);
+//                writeCardsToSharedPreferences(andwersForCard[newVal]);
+//            }
+//        });
 
 
         backButton = findViewById(R.id.btnBack);
@@ -153,29 +153,29 @@ public class SettingsActivity extends AppCompatActivity {
         return prefs.getInt(MOVE, 1);
     }
 
-    private void writeCardsToSharedPreferences(String card) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(CARD, card);
-        editor.commit();
-    }
-
-    private String[] readCardsFromSharedPreferences() {
-        String[] temp1 = {"no", "yes"};
-        String[] temp2 = {"yes", "no"};
-        System.out.println("here is preference: "+ prefs.getString(CARD, "no"));
-        if(prefs.getString(CARD, "no").equalsIgnoreCase("no")){
-            andwersForCard = temp1;
-            return  temp1;
-        }
-        else if(prefs.getString(CARD, "no").equalsIgnoreCase("yes")){
-            andwersForCard = temp2;
-            return temp2;
-        }
-        else {
-            andwersForCard = temp1;
-            return temp1;
-        }
-    }
+//    private void writeCardsToSharedPreferences(String card) {
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(CARD, card);
+//        editor.commit();
+//    }
+//
+//    private String[] readCardsFromSharedPreferences() {
+//        String[] temp1 = {"no", "yes"};
+//        String[] temp2 = {"yes", "no"};
+//        System.out.println("here is preference: "+ prefs.getString(CARD, "no"));
+//        if(prefs.getString(CARD, "no").equalsIgnoreCase("no")){
+//            andwersForCard = temp1;
+//            return  temp1;
+//        }
+//        else if(prefs.getString(CARD, "no").equalsIgnoreCase("yes")){
+//            andwersForCard = temp2;
+//            return temp2;
+//        }
+//        else {
+//            andwersForCard = temp1;
+//            return temp1;
+//        }
+//    }
 //
 //    @Override
 //    protected void onSaveInstanceState(Bundle outState) {

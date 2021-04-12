@@ -82,7 +82,6 @@ public class GameActivity extends AppCompatActivity {
     private static final String PREFS_FILE_NAME = "AppPrefs";
     private static final String ROUND = "rounds per game";
     private static final String MOVE = "moves per round";
-    private static final String CARD = "start with cards or not";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,16 +90,12 @@ public class GameActivity extends AppCompatActivity {
         //Load Values from preferences
         Log.i(TAG, "getting preferences");
         sharedPreferences = getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
-        numberOfRounds = sharedPreferences.getInt("Rounds",3);
-        numberOfCards = sharedPreferences.getInt("Rounds",3);
-        movesPerRound = sharedPreferences.getInt("MovesPerRound",1);
+        numberOfRounds = sharedPreferences.getInt(ROUND,3);
+        numberOfCards = numberOfRounds;
+        movesPerRound = sharedPreferences.getInt(MOVE,1);
         showCards = true;
         startWithCards = false;
 
-//        numberOfRounds = Integer.parseInt(sharedPreferences.getString(ROUND,"3"));
-//        movesPerRound = sharedPreferences.getInt(MOVE,1);
-//        numberOfCards = numberOfRounds;
-//        showCards = true;
 //        if(sharedPreferences.getString(CARD,"no").equalsIgnoreCase("no")){
 //            startWithCards = false;
 //        }
