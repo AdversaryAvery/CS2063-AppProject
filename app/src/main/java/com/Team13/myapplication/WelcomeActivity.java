@@ -12,9 +12,11 @@ import android.widget.Button;
 public class WelcomeActivity extends AppCompatActivity {
     private static final String TAG = "WELCOME_ACTIVITY";
 
-    private Button playGameButton;
+    private Button aiGameButton;
+    private Button multiGameButton;
     private Button instructionsButton;
     private Button settingsButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WelcomeActivity.this, InstructionsActivity.class);
+                Log.i(TAG, "starting Instructions Activity");
                 startActivity(intent);
             }
         });
@@ -41,14 +44,27 @@ public class WelcomeActivity extends AppCompatActivity {
             }
         });
 
-        playGameButton = findViewById(R.id.btnBack);
-        playGameButton.setOnClickListener(new View.OnClickListener() {
+        aiGameButton = findViewById(R.id.single);
+        aiGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(WelcomeActivity.this, GameActivity.class);
-                Log.i(TAG, "starting Game Activity");
+                Log.i(TAG, "starting Single Player Game Activity");
+                intent.putExtra("game mode", "single");
                 startActivity(intent);
             }
         });
+
+        multiGameButton = findViewById(R.id.enterName);
+        multiGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WelcomeActivity.this, MultiActivity.class);
+                Log.i(TAG, "starting Multi Player Game Activity");
+                startActivity(intent);
+            }
+        });
+
+
     }
 }

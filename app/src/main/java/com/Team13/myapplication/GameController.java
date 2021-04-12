@@ -6,10 +6,16 @@ import android.util.Log;
 
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GameController {
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
+
     private int roundNum;
     private float time;
     private int sumOfTurns;
@@ -45,6 +51,15 @@ public class GameController {
         return wheel;
     }
 
+    public void startingCards(int numberOfCards){
+        for(Player player: allPlayers){
+            for(int count = 0; count < numberOfCards; count++){
+                player.getHand().add(deck.get(0));
+                deck.remove(0);
+            }
+        }
+    }
+
     public void assignCards2Wheel(){
         int i = 0;
         Log.i("Card2Wheel","Players : " + String.valueOf(allPlayers.size()) );
@@ -53,6 +68,12 @@ public class GameController {
             wheel.add(deck.get(0));
             deck.remove(0);
             i++;
+        }
+    }
+
+    public void donations2Wheel(){
+        for(Player player: allPlayers){
+            wheel.add(player.getDonationCard());
         }
     }
 
@@ -66,15 +87,15 @@ public class GameController {
     }
 
 
-    public ArrayList<Player> rankPlayers(){
+    public ArrayList<Player> rankPlayers( int cardsPerHand, int totalCards){
         Rank bestRank = new Rank();
         bestRank.setHandRank(1);
         bestRank.setHighestCard(2);
-
+        Log.i("Rank","Started");
         for(Player player: allPlayers){
-            player.rankHand(player.getHand());
+            player.altRank(player.getHand(),cardsPerHand);
         }
-
+        Log.i("Rank","Hands Ranked");
         for(Player player: allPlayers){
             if(player.getRank().getHandRank() > bestRank.getHandRank()){
                 bestRank.setHandRank(player.getRank().getHandRank());
@@ -217,9 +238,9 @@ public class GameController {
         ShuffleDeck();
     }
 
-    public void startRound(){
+    public void startRound(int movesPerRound){
         for(Player player: allPlayers){
-            player.roundStart(-1, 1);
+            player.roundStart(-movesPerRound, movesPerRound);
         }
     }
 }

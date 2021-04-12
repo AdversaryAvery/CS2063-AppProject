@@ -45,6 +45,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         initSharedPreferences();
 
+        sharedPreferences = getSharedPreferences(pref, Context.MODE_PRIVATE);
+
         editText1 = (EditText) findViewById(R.id.editText1);
         editText2 = (EditText) findViewById(R.id.editText2);
         editText3 = (EditText) findViewById(R.id.editText3);
@@ -86,6 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+
         backButton = findViewById(R.id.btnBack);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,28 +119,6 @@ public class SettingsActivity extends AppCompatActivity {
         prefs = getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
     }
 
-//    private void writeRoundsToSharedPreferences(String round) {
-//        SharedPreferences.Editor editor = prefs.edit();
-//        editor.putString(ROUND, round);
-//        editor.commit();
-//    }
-//
-//    private String[] readRoundsFromSharedPreferences() {
-//        String[] temp1 = {"3", "5"};
-//        String[] temp2 = {"5", "3"};
-//        if(prefs.getString(ROUND, "3").equalsIgnoreCase("3")){
-//            answersForRounds = temp1;
-//            return  temp1;
-//        }
-//        else if(prefs.getString(ROUND, "3").equalsIgnoreCase("5")){
-//            answersForRounds = temp2;
-//            return temp2;
-//        }
-//        else {
-//            answersForRounds = temp1;
-//            return temp1;
-//        }
-//    }
     private void writeRoundsToSharedPreferences(int round) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(ROUND, round);
@@ -150,6 +131,7 @@ public class SettingsActivity extends AppCompatActivity {
         if(prefs.getInt(ROUND, 3) == 3){
             answersForRounds = temp1;
             return  temp1;
+
         }
         else if(prefs.getInt(ROUND, 3) == 5){
             answersForRounds = temp2;
@@ -162,18 +144,11 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
     private void writeMovesToSharedPreferences(int move) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(MOVE, move);
         editor.commit();
+
     }
 
     private int readMovesFromSharedPreferences() {
