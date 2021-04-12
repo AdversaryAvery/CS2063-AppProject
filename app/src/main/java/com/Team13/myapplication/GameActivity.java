@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
     private int numPlayers;
     private GameController controller;
     private Button endTurnButton;
+    private Button quitButton;
     private CountDownTimer roundTimer;
 
     //Configurable Values
@@ -177,6 +178,17 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
+        quitButton = findViewById(R.id.quitButton);
+
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "quit onClick() called");
+                Intent intent = new Intent(GameActivity.this, WelcomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         player1cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         player2cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
         player3cards.setLayoutManager(new LinearLayoutManager(getApplicationContext(),RecyclerView.HORIZONTAL,false));
@@ -188,6 +200,7 @@ public class GameActivity extends AppCompatActivity {
         player2cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(1).getHand(), showCards));
         player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
         player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
+
         // Round Logic Starts Here
         startRound();
 
