@@ -40,6 +40,7 @@ public class GameActivity extends AppCompatActivity {
     private int numPlayers = 4;
     private GameController controller;
     private Button endTurnButton;
+    private Button quitButton;
     private CountDownTimer roundTimer;
 
     private ArrayList<Card> postWheel;
@@ -137,6 +138,18 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(TAG, "endTurnButton onClick() called");
                 endPlayerTurn();
+            }
+        });
+
+
+        quitButton = findViewById(R.id.quitButton);
+
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "quit onClick() called");
+                Intent intent = new Intent(GameActivity.this, WelcomeActivity.class);
+                startActivity(intent);
             }
         });
 
