@@ -132,6 +132,10 @@ public class GameActivity extends AppCompatActivity {
             players.add(new AIPlayer());
         }
 
+        for(int i = 0; i<4; i++){
+            players.get(i).setPlayerNumber(i+1);
+        }
+
         controller.setAllPlayers(players);
 
         endTurnButton = findViewById(R.id.turnButton);
@@ -296,7 +300,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void endRound(){
-        if(controller.getRoundNum() > 0){
+
         controller.sumAllDecisions();
         decisionView.setText("Sum of Decisions:" + String.valueOf(controller.getSumOfTurns()));
         controller.shiftWheel();
@@ -315,41 +319,8 @@ public class GameActivity extends AppCompatActivity {
         controller.setRoundNum(controller.getRoundNum() - 1);
             Log.i("Post Round","Before Round" + String.valueOf(controller.getRoundNum()));
             postRound();
-        }
-        else{
-            Log.i("Post Game","Start Ranking");
-            ArrayList<Player> winnerList = controller.rankPlayers(numberOfCards,numberOfRounds);
-
-            String tempString;
-            Player winner = winnerList.get(0);
-            Rank tempRank = winner.getRank();
-
-            if(numberOfCards == 3){
-            switch(tempRank.getHandRank()){
-                case 6: tempString = "Straight Flush"; break;
-                case 5: tempString = "Three of a Kind"; break;
-                case 4: tempString = "Straight"; break;
-                case 3: tempString = "Flush"; break;
-                case 2: tempString = "Pair"; break;
-                default: tempString = "High Card"; break;
-            }}
-
-            else{switch(tempRank.getHandRank()){
-                case 10: tempString = "Royal Flush"; break;
-                case 9: tempString = "Straight Flush"; break;
-                case 8: tempString = "Four of a Kind"; break;
-                case 7: tempString = "Full House"; break;
-                case 6: tempString = "Flush"; break;
-                case 5: tempString = "Straight"; break;
-                case 4: tempString = "Three of a Kind"; break;
-                case 3: tempString = "Two Pair"; break;
-                case 2: tempString = "Pair"; break;
-                default: tempString = "High Card"; break;}}
-
-            decisionView.append("\nBest Hand:" + tempString);
 
 
-        }
 
 
     }
@@ -385,7 +356,7 @@ public class GameActivity extends AppCompatActivity {
         player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
         player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
 
-    }
+
 
     private void initSettings() {
         Log.i(TAG, "connecting to settings db node");

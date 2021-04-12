@@ -14,6 +14,7 @@ public class Player {
     private Rank rank;
     protected int turnDecision;
     private int donationCard = 0;
+    private int playerNumber;
 
     public Rank rankHand(ArrayList<Card> hand) {
         int highest = 0;
@@ -183,6 +184,14 @@ public class Player {
 
     public Rank altRank(ArrayList<Card> hand){
         return altRank(hand,5);
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
     }
 
     public Rank altRank(ArrayList<Card> hand, int cardsPerHand){
