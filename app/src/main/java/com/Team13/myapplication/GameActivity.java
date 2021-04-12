@@ -26,6 +26,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,21 +35,25 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class GameActivity extends AppCompatActivity {
+    private static final String TAG = "GAME_ACTIVITY";
     private GestureDetectorCompat swipeDetector;
     private FirebaseDatabase database;
-    private DatabaseReference dbRef;
-    private static final String TAG = "GAME_ACTIVITY";
+    private DatabaseReference settingsRef;
+    private DatabaseReference roomRef;
+    private static final String ROUND = "rounds per game";
+    private static final String MOVE = "moves per round";
+    private String gameMode;
     protected int finalDecision = 0;
-    private int maxSwipes = 3;
-    private int numPlayers;
     private GameController controller;
     private Button endTurnButton;
     private Button quitButton;
@@ -57,7 +62,6 @@ public class GameActivity extends AppCompatActivity {
     //Configurable Values
     private int numberOfRounds;
     private Boolean showCards;
-    private Boolean startWithCards;
     private int numberOfCards;
     private int movesPerRound;
     //
@@ -77,36 +81,18 @@ public class GameActivity extends AppCompatActivity {
     TextView player2name;
     TextView player3name;
     TextView player4name;
-
-    private SharedPreferences sharedPreferences;
-    private static final String PREFS_FILE_NAME = "AppPrefs";
-    private static final String ROUND = "rounds per game";
-    private static final String MOVE = "moves per round";
-    private static final String CARD = "start with cards or not";
+    private String playerName;
+    private int playerIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "onCreate called");
         super.onCreate(savedInstanceState);
+        database = FirebaseDatabase.getInstance();
         //Load Values from preferences
-        Log.i(TAG, "getting preferences");
-        sharedPreferences = getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE);
-        numberOfRounds = sharedPreferences.getInt("Rounds",3);
-        numberOfCards = sharedPreferences.getInt("Rounds",3);
-        movesPerRound = sharedPreferences.getInt("MovesPerRound",1);
-        showCards = true;
-        startWithCards = false;
+        Log.i(TAG, "getting game settings");
+        initSettings();
 
-//        numberOfRounds = Integer.parseInt(sharedPreferences.getString(ROUND,"3"));
-//        movesPerRound = sharedPreferences.getInt(MOVE,1);
-//        numberOfCards = numberOfRounds;
-//        showCards = true;
-//        if(sharedPreferences.getString(CARD,"no").equalsIgnoreCase("no")){
-//            startWithCards = false;
-//        }
-//        else if(sharedPreferences.getString(CARD,"no").equalsIgnoreCase("yes")){
-//            startWithCards = true;
-//        }
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_game);
 //        Create/Instantiate game controller
@@ -114,7 +100,6 @@ public class GameActivity extends AppCompatActivity {
         controller.setRoundNum(numberOfRounds);
 //        Set up gestureDetector to use swipe gestureListener
         swipeDetector = new GestureDetectorCompat(this, new MyGestureListener());
-
 
 
         cardUpLeft = (ImageView) findViewById(R.id.UL);
@@ -137,32 +122,9 @@ public class GameActivity extends AppCompatActivity {
 
         ArrayList<Player> players = new ArrayList<Player>();
 
-        database = FirebaseDatabase.getInstance();
-        SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);
-        dbRef = database.getReference("settings");
-        dbRef.child("numPlayers").get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved numPlayer value");
-                        numPlayers = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 2;
-                    }
-                });
-        dbRef.child("maxSwipes").get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved maxSwipes value");
-                        maxSwipes = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 3;
-                    }
-                });
-
-
-        String gameMode = getIntent().getStringExtra("game mode");
+        gameMode = getIntent().getStringExtra("game mode");
         if (gameMode.matches("multi")) {
-            for (int i=0 ; i < numPlayers; i++) {
-                players.add(new Player());
-            }
+            setupMultiPlayer(players);
         } else {
             players.add(new Player());
             players.add(new AIPlayer());
@@ -171,10 +133,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         controller.setAllPlayers(players);
-
-        if(startWithCards){
-            controller.startingCards(numberOfCards);
-        }
 
         endTurnButton = findViewById(R.id.turnButton);
 
@@ -230,7 +188,7 @@ public class GameActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
 
-            if (swipeCount < maxSwipes) {
+            if (swipeCount < movesPerRound || controller.getRoundNum() > 0) {
                 if ((event1.getX() - event2.getX()) > sensitivity) {
                     Log.i(DEBUG_TAG, "Left Swipe: " + event1.getX() + ", " + event2.getX());
                     swipeLeft();
@@ -239,7 +197,11 @@ public class GameActivity extends AppCompatActivity {
                     swipeRight();
                 }
             } else {
-                Toast.makeText(GameActivity.this, "No More Moves", Toast.LENGTH_SHORT).show();
+                if (controller.getRoundNum() == 0) {
+                    Toast.makeText(GameActivity.this, "Game Ended", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GameActivity.this, "No More Moves", Toast.LENGTH_SHORT).show();
+                }
             }
 
             return true;
@@ -279,13 +241,14 @@ public class GameActivity extends AppCompatActivity {
             p.endTurn();
         }
         Toast.makeText(GameActivity.this, "Ended Round", Toast.LENGTH_SHORT).show();
-        endRound();
+//        checkEndRound();
     }
 
     public void startRound(){
-
-        player1name.setText("Player 1");
-        player2name.setText("Player 2");
+        if (gameMode != "multi") {
+            player1name.setText("Player 1");
+            player2name.setText("Player 2");
+        }
         player3name.setText("Player 3");
         player4name.setText("Player 4");
 
@@ -321,13 +284,7 @@ public class GameActivity extends AppCompatActivity {
         roundTimer.start();
 
         ArrayList<Card> wheelHand = controller.getWheel();
-        if(startWithCards){
-            controller.donations2Wheel();
-        }
-
-        else{
         controller.assignCards2Wheel();
-        }
 
         cardUpLeft.setImageDrawable(wheelHand.get(0).getFaceUpCard()); // In front of Player 1
         cardUpRight.setImageDrawable(wheelHand.get(1).getFaceUpCard()); // In front of Player 2
@@ -418,9 +375,6 @@ public class GameActivity extends AppCompatActivity {
 
         controller.assignCards2Players();
 
-        int cardsInHand = 3 - controller.getRoundNum();
-        ArrayList<Player> tempPlayerList = controller.getAllPlayers();
-
         player1cards.setAdapter(null);
         player2cards.setAdapter(null);
         player3cards.setAdapter(null);
@@ -431,9 +385,64 @@ public class GameActivity extends AppCompatActivity {
         player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
         player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
 
-
-            }
-
     }
+
+    private void initSettings() {
+        Log.i(TAG, "connecting to settings db node");
+        settingsRef = database.getReference("settings");
+        settingsRef.child(ROUND).get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Log.i(TAG, "retrieved number of rounds value");
+                        numberOfRounds = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()) : 3;
+                    }
+                });
+        settingsRef.child(MOVE).get()
+                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        Log.i(TAG, "retrieved number of moves/round value");
+                        movesPerRound = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()) : 1;
+                    }
+                });
+        numberOfCards = numberOfRounds;
+        showCards = true;
+        SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);
+        playerName = gamePrefs.getString("playerName", "");
+    }
+
+    private void setupMultiPlayer(ArrayList<Player> players) {
+        roomRef = database.getReference("room");
+        roomRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i(TAG, "room onDataChange called");
+                ArrayList<String> roomList = new ArrayList<String>();
+                Iterable<DataSnapshot> room = snapshot.getChildren();
+                int count = 0;
+                for (DataSnapshot d : room) {
+                    if ((d.getKey()) == playerName) {
+                        playerIndex = count;
+                    }
+                    if (count == 0) {
+                        player1name.setText(d.getKey());
+                        players.add(new Player());
+                    } else {
+                        player2name.setText(d.getKey());
+                        players.add(new Player());
+                    }
+                    count++;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "error with room node");
+            }
+        });
+        players.add(new AIPlayer());
+        players.add(new AIPlayer());
+    }
+}
 
 
