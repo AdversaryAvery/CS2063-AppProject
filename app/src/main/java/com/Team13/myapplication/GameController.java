@@ -1,24 +1,45 @@
 package com.Team13.myapplication;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GameController {
+    private static final String TAG = "GAME_CONTROLLER";
     private FirebaseDatabase database;
-    private DatabaseReference dbRef;
+    private DatabaseReference controllerRef;
+
+    private DatabaseReference wheelRef;
+
+    private DatabaseReference deckRef;
 
     private int roundNum;
     private float time;
     private int sumOfTurns;
+
+    private String gameMode;
 
     private ArrayList<Card> wheel;
     private ArrayList<Card> deck;
@@ -48,6 +69,7 @@ public class GameController {
         }
 
         wheel = tempWheel;
+        updateDBWheel();
         return wheel;
     }
 
@@ -58,6 +80,7 @@ public class GameController {
                 deck.remove(0);
             }
         }
+        updateDBDeck();
     }
 
     public void assignCards2Wheel(){
@@ -69,12 +92,14 @@ public class GameController {
             deck.remove(0);
             i++;
         }
+        updateDBWheel();
     }
 
     public void donations2Wheel(){
         for(Player player: allPlayers){
             wheel.add(player.getDonationCard());
         }
+        updateDBWheel();
     }
 
     public void assignCards2Players(){
@@ -84,6 +109,7 @@ public class GameController {
             wheel.remove(0);
             i++;
         }
+        updateDBWheel();
     }
 
 
@@ -181,6 +207,7 @@ public class GameController {
         tempDeck.add(new Card(12,'d', ResourcesCompat.getDrawable(res,R.drawable.card_qd,null),cardBack));
         tempDeck.add(new Card(13,'d', ResourcesCompat.getDrawable(res,R.drawable.card_kd,null),cardBack));
 
+        updateDBDeck();
         return tempDeck;
     }
 
@@ -216,6 +243,14 @@ public class GameController {
         this.wheel = wheel;
     }
 
+    public String getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(String mode) {
+        this.gameMode = mode;
+    }
+
     public ArrayList<Card> getDeck() {
         return deck;
     }
@@ -233,14 +268,59 @@ public class GameController {
     }
 
     public GameController(Resources res){
+        database = FirebaseDatabase.getInstance();
+        controllerRef = database.getReference("game");
+        wheelRef = database.getReference("game/wheel");
+        deckRef = database.getReference("game/deck");
         this.deck = makeDeck(res);
         wheel = new ArrayList<Card>();
         ShuffleDeck();
+        addEventListener();
     }
 
     public void startRound(int movesPerRound){
         for(Player player: allPlayers){
             player.roundStart(-movesPerRound, movesPerRound);
         }
+    }
+
+    private void addEventListener() {
+        wheelRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                updateGameWheel((String) snapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "error updating wheel");
+            }
+        });
+        deckRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                updateGameDeck((String) snapshot.getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.i(TAG, "error updating deck");
+            }
+        });
+    }
+
+    private void updateDBWheel() {
+        String json = new Gson().toJson(wheel);
+        wheelRef.setValue(json);
+    }
+    private void updateGameWheel(String jsonString) {
+            wheel = new Gson().fromJson(jsonString, ArrayList.class);
+    }
+    private void updateDBDeck() {
+        String json = new Gson().toJson(deck);
+        deckRef.setValue(json);
+    }
+    private void updateGameDeck(String jsonString) {
+        deck = new Gson().fromJson(jsonString, ArrayList.class);
     }
 }

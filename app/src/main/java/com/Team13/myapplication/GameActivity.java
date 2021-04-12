@@ -49,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     private GestureDetectorCompat swipeDetector;
     private FirebaseDatabase database;
     private DatabaseReference settingsRef;
+    private DatabaseReference gameRef;
     private DatabaseReference roomRef;
     private static final String ROUND = "rounds per game";
     private static final String MOVE = "moves per round";
@@ -241,14 +242,14 @@ public class GameActivity extends AppCompatActivity {
             p.endTurn();
         }
         Toast.makeText(GameActivity.this, "Ended Round", Toast.LENGTH_SHORT).show();
-//        checkEndRound();
+        endRound();
     }
 
     public void startRound(){
         if (gameMode != "multi") {
             player1name.setText("Player 1");
-            player2name.setText("Player 2");
         }
+        player2name.setText("Player 2");
         player3name.setText("Player 3");
         player4name.setText("Player 4");
 
@@ -296,6 +297,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void endRound(){
+        Log.i(TAG, "Round num: " + controller.getRoundNum() + " " + numberOfRounds );
         if(controller.getRoundNum() > 0){
         controller.sumAllDecisions();
         decisionView.setText("Sum of Decisions:" + String.valueOf(controller.getSumOfTurns()));
@@ -317,6 +319,7 @@ public class GameActivity extends AppCompatActivity {
             postRound();
         }
         else{
+            Log.i(TAG, "Round num: " + controller.getRoundNum() + " " + numberOfRounds );
             Log.i("Post Game","Start Ranking");
             ArrayList<Player> winnerList = controller.rankPlayers(numberOfCards,numberOfRounds);
 
@@ -413,33 +416,39 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setupMultiPlayer(ArrayList<Player> players) {
+//        This code is not a true implementation of mutiplayer.
+//        This implementation is due to the limitation of the Android Studio Emulators
+        gameRef = database.getReference("game");
+        gameRef.setValue("");
+        gameRef.child("wheel").setValue("");
+        gameRef.child("gameDeck").setValue("");
+
         roomRef = database.getReference("room");
         roomRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.i(TAG, "room onDataChange called");
-                ArrayList<String> roomList = new ArrayList<String>();
-                Iterable<DataSnapshot> room = snapshot.getChildren();
-                int count = 0;
-                for (DataSnapshot d : room) {
-                    if ((d.getKey()) == playerName) {
-                        playerIndex = count;
-                    }
-                    if (count == 0) {
-                        player1name.setText(d.getKey());
-                        players.add(new Player());
-                    } else {
-                        player2name.setText(d.getKey());
-                        players.add(new Player());
-                    }
-                    count++;
-                }
+//                Iterable<DataSnapshot> room = snapshot.getChildren();
+//                int count = 0;
+//                for (DataSnapshot d : room) {
+//                    if ((d.getKey()) == playerName) {
+//                        playerIndex = count;
+//                    }
+//                    if (count == 0) {
+//                        player1name.setText(d.getKey());
+//                        players.add(new Player());
+//                    }
+//                    count++;
+//                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.i(TAG, "error with room node");
             }
         });
+        player1name.setText(playerName);
+        players.add(new Player());
+        players.add(new AIPlayer());
         players.add(new AIPlayer());
         players.add(new AIPlayer());
     }
