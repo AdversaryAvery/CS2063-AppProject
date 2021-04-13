@@ -18,6 +18,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MultiActivity extends AppCompatActivity {
     private static final String TAG = "MULTI_ACTIVITY";
 
@@ -35,7 +38,7 @@ public class MultiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_multi);
 
         nameInput = findViewById(R.id.nameInput);
-        enterName = findViewById(R.id.enterName);
+        enterName = findViewById(R.id.multiple);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);
@@ -44,7 +47,13 @@ public class MultiActivity extends AppCompatActivity {
             Log.i(TAG, "found player in db");
             playerRef = database.getReference("players/" + playerName);
             addEventListener();
-            playerRef.setValue("");
+            addEventListener();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put("isDone", false);
+            childUpdates.put("hand", "");
+            childUpdates.put("rank", "");
+            childUpdates.put("turn decision", 0);
+            playerRef.updateChildren(childUpdates);
         }
 
         enterName.setOnClickListener(new View.OnClickListener() {
@@ -59,7 +68,12 @@ public class MultiActivity extends AppCompatActivity {
                     enterName.setEnabled(false);
                     playerRef = database.getReference("players/" + playerName);
                     addEventListener();
-                    playerRef.setValue("");
+                    Map<String, Object> childUpdates = new HashMap<>();
+                    childUpdates.put("isDone", false);
+                    childUpdates.put("hand", "");
+                    childUpdates.put("rank", "");
+                    childUpdates.put("turn decision", 0);
+                    playerRef.updateChildren(childUpdates);
                 }
             }
         });

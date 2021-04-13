@@ -134,24 +134,6 @@ public class GameActivity extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);
-        dbRef = database.getReference("settings");
-        dbRef.child("numPlayers").get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved numPlayer value");
-                        numPlayers = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 2;
-                    }
-                });
-        dbRef.child("maxSwipes").get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved maxSwipes value");
-                        maxSwipes = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 3;
-                    }
-                });
-
 
         String gameMode = getIntent().getStringExtra("game mode");
         if (gameMode.matches("multi")) {
@@ -192,6 +174,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "quit onClick() called");
+                roundTimer.cancel();
                 Intent intent = new Intent(GameActivity.this, WelcomeActivity.class);
                 startActivity(intent);
             }
@@ -229,7 +212,7 @@ public class GameActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
 
-            if (swipeCount < maxSwipes) {
+            if (swipeCount < maxSwipes && controller.getRoundNum() > 0) {
                 if ((event1.getX() - event2.getX()) > sensitivity) {
                     Log.i(DEBUG_TAG, "Left Swipe: " + event1.getX() + ", " + event2.getX());
                     swipeLeft();
@@ -238,7 +221,11 @@ public class GameActivity extends AppCompatActivity {
                     swipeRight();
                 }
             } else {
-                Toast.makeText(GameActivity.this, "No More Moves", Toast.LENGTH_SHORT).show();
+                if (controller.getRoundNum() <= 0) {
+                    Toast.makeText(GameActivity.this, "End of Game", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(GameActivity.this, "No More Moves", Toast.LENGTH_SHORT).show();
+                }
             }
 
             return true;
