@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,6 +12,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/instruction1"
+        android:textColor="@color/white"
+        android:translationY="70dp" />
+    <TextView
+        android:id="@+id/instruction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/instruction2"
+        android:textColor="@color/white"
+        android:translationY="70dp" />
+    <TextView
+        android:id="@+id/instruction3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/instruction3"
         android:textColor="@color/white"
         android:translationY="70dp" />
 
@@ -32,4 +46,4 @@
         android:translationY="-80dp"
         app:backgroundTint="@color/white" />
 
-</LinearLayout>
+</RelativeLayout>

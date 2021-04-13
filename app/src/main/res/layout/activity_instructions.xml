@@ -13,6 +13,18 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="@string/instruction1" />
+    <TextView
+        android:id="@+id/instruction2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/instruction2" />
+    <TextView
+        android:id="@+id/instruction3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/instruction3" />
 
     <Button
         android:id="@+id/btnBack"
