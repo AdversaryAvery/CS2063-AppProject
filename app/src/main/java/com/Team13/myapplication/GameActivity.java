@@ -384,7 +384,7 @@ public class GameActivity extends AppCompatActivity {
         gameRef = database.getReference("game");
         gameRef.setValue("");
         gameRef.child("wheel").setValue("");
-        gameRef.child("gameDeck").setValue("");
+        gameRef.child("deck").setValue("");
 
         roomRef = database.getReference("room");
         roomRef.addValueEventListener(new ValueEventListener() {

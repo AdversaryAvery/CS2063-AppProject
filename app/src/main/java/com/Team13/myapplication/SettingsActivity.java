@@ -19,8 +19,10 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "ROOM_ACTIVITY";
@@ -86,29 +88,41 @@ public class SettingsActivity extends AppCompatActivity {
     // Private Helper Methods
     private void initDatabase() {
         Log.i(TAG, "connecting to settings db node");
-        settingsRef = database.getReference("settings");
-        settingsRef.child(ROUND).get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved number of rounds value");
-                        numRounds = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 3;
-                    }
-                });
-        settingsRef.child(MOVE).get()
-                .addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Log.i(TAG, "retrieved number of moves/round value");
-                        numMovesPerRound = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()): 1;
-                    }
-                });
+        database = FirebaseDatabase.getInstance();
+        roundsRef = database.getReference("settings/" + ROUND);
+        roundsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i(TAG, "retrieved number of rounds value");
+                String value = snapshot.getValue(String.class);
+                numRounds = (value != null ) ? Integer.getInteger(value) : 3;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+        movesRef = database.getReference("settings/" + MOVE);
+        movesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.i(TAG, "retrieved number of moves/round value");
+                String value = snapshot.getValue(String.class);
+                numMovesPerRound = (value != null ) ? Integer.getInteger(value): 1;
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
     }
 
     private void writeRoundsToSharedPreferences(int round) {
         Log.i(TAG, "updating rounds in db " + round);
         roundsRef = database.getReference("settings/" + ROUND);
-        settingsRef.setValue(""+round);
+        roundsRef.setValue(""+round);
     }
 
     private String[] readRoundsFromSharedPreferences() {
@@ -133,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void writeMovesToSharedPreferences(int move) {
         Log.i(TAG, "updating moves in db " + move);
         movesRef = database.getReference("settings/" + MOVE);
-        settingsRef.setValue(""+move);
+        movesRef.setValue(""+move);
     }
 
     private int readMovesFromSharedPreferences() {
