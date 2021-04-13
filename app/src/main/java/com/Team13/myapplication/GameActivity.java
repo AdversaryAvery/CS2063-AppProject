@@ -428,7 +428,17 @@ public class GameActivity extends AppCompatActivity {
                 default: tempString = "High Card"; break;}}
 
             decisionView.setText("Winner: Player " + String.valueOf(winner.getPlayerNumber()) +"\nBest Hand:" + tempString);
-            endTurnButton.setText("Game Over");
+            endTurnButton.setText("Play Again");
+
+            endTurnButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                    Log.i(TAG, "Restarting Single Player Game Activity");
+                    intent.putExtra("game mode", "single");
+                    startActivity(intent);
+                }
+            });
 
         }
         else{
