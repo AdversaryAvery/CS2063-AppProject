@@ -37,7 +37,7 @@ public class RoomActivity extends AppCompatActivity {
     private TextView playerCount;
     private TextView joinText;
     private String playerName;
-    private int numPlayers = 1;
+    private int numPlayers = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -122,8 +122,10 @@ public class GameActivity extends AppCompatActivity {
         player4name = findViewById(R.id.player4name);
 
         ArrayList<Player> players = new ArrayList<Player>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        SharedPreferences gamePrefs = getSharedPreferences("GAME-PREFS", 0);
 
-        gameMode = getIntent().getStringExtra("game mode");
+        String gameMode = getIntent().getStringExtra("game mode");
         if (gameMode.matches("multi")) {
             setupMultiPlayer(players);
         } else {
@@ -156,6 +158,7 @@ public class GameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "quit onClick() called");
+                roundTimer.cancel();
                 Intent intent = new Intent(GameActivity.this, WelcomeActivity.class);
                 startActivity(intent);
             }
@@ -193,7 +196,7 @@ public class GameActivity extends AppCompatActivity {
         public boolean onFling(MotionEvent event1, MotionEvent event2,
                                float velocityX, float velocityY) {
 
-            if (swipeCount < movesPerRound || controller.getRoundNum() > 0) {
+            if (swipeCount < movesPerRound && controller.getRoundNum() > 0) {
                 if ((event1.getX() - event2.getX()) > sensitivity) {
                     Log.i(DEBUG_TAG, "Left Swipe: " + event1.getX() + ", " + event2.getX());
                     swipeLeft();
@@ -202,8 +205,8 @@ public class GameActivity extends AppCompatActivity {
                     swipeRight();
                 }
             } else {
-                if (controller.getRoundNum() == 0) {
-                    Toast.makeText(GameActivity.this, "Game Ended", Toast.LENGTH_SHORT).show();
+                if (controller.getRoundNum() <= 0) {
+                    Toast.makeText(GameActivity.this, "End of Game", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(GameActivity.this, "No More Moves", Toast.LENGTH_SHORT).show();
                 }
@@ -351,6 +354,83 @@ public class GameActivity extends AppCompatActivity {
         player3cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(2).getHand(), showCards));
         player4cards.setAdapter(new MyAdapter(controller.getAllPlayers().get(3).getHand(), showCards));
 
+        if (controller.getRoundNum() <= 0) {
+            Log.i("Post Game", "Start Ranking");
+            ArrayList<Player> winnerList = controller.rankPlayers(numberOfCards, numberOfRounds);
+
+            String tempString;
+            Player winner = winnerList.get(0);
+            Rank tempRank = winner.getRank();
+
+            if (numberOfCards == 3) {
+                switch (tempRank.getHandRank()) {
+                    case 6:
+                        tempString = "Straight Flush";
+                        break;
+                    case 5:
+                        tempString = "Three of a Kind";
+                        break;
+                    case 4:
+                        tempString = "Straight";
+                        break;
+                    case 3:
+                        tempString = "Flush";
+                        break;
+                    case 2:
+                        tempString = "Pair";
+                        break;
+                    default:
+                        tempString = "High Card";
+                        break;
+                }
+            } else {
+                switch (tempRank.getHandRank()) {
+                    case 10:
+                        tempString = "Royal Flush";
+                        break;
+                    case 9:
+                        tempString = "Straight Flush";
+                        break;
+                    case 8:
+                        tempString = "Four of a Kind";
+                        break;
+                    case 7:
+                        tempString = "Full House";
+                        break;
+                    case 6:
+                        tempString = "Flush";
+                        break;
+                    case 5:
+                        tempString = "Straight";
+                        break;
+                    case 4:
+                        tempString = "Three of a Kind";
+                        break;
+                    case 3:
+                        tempString = "Two Pair";
+                        break;
+                    case 2:
+                        tempString = "Pair";
+                        break;
+                    default:
+                        tempString = "High Card";
+                        break;
+                }
+            }
+
+            decisionView.setText("Winner: Player " + String.valueOf(winner.getPlayerNumber()) + "\nBest Hand:" + tempString);
+            endTurnButton.setText("Play Again");
+
+            endTurnButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), GameActivity.class);
+                    Log.i(TAG, "Restarting Single Player Game Activity");
+                    intent.putExtra("game mode", "single");
+                    startActivity(intent);
+                }
+            });
+        }
     }
 
     private void initSettings() {
