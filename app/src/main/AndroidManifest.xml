@@ -32,9 +32,11 @@
             android:screenOrientation="landscape">
         </activity>
 
-        <activity android:name=".MultiActivity"></activity>
+        <activity android:name=".MultiActivity"
+        android:screenOrientation="landscape"></activity>
 
-        <activity android:name=".RoomActivity"></activity>
+        <activity android:name=".RoomActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:gravity="center_horizontal"
+    android:textAlignment="center"
+    android:orientation="horizontal"
+    android:id="@+id/linearLayout">
+
+    <TextView
+        android:id="@+id/roomText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F8F6F6"
+        android:backgroundTint="#FFFFFF"
+        android:text="@string/roomText"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="36sp"
+        tools:layout_conversion_absoluteHeight="45dp"
+        tools:layout_conversion_absoluteWidth="731dp"
+        tools:layout_editor_absoluteX="-232dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/playerCount"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#FFFFFF"
+        android:text="0"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp"
+        android:translationY="45dp"
+        tools:layout_conversion_absoluteHeight="103dp"
+        tools:layout_conversion_absoluteWidth="464dp"
+        tools:layout_editor_absoluteX="499dp"
+        tools:layout_editor_absoluteY="51dp" />
+
+    <Button
+        android:id="@+id/roomButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:text="@string/createRoom"
+        android:textColor="@color/black"
+        android:theme="@style/ButtonStyle"
+        android:translationX="300dp"
+        android:translationY="250dp"
+        app:backgroundTint="#FFF8C6"
+        tools:layout_conversion_absoluteHeight="203dp"
+        tools:layout_conversion_absoluteWidth="0dp"
+        tools:layout_editor_absoluteX="984dp"
+        tools:layout_editor_absoluteY="263dp" />
+
+    <ListView
+        android:id="@+id/roomList"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:background="#FDFDFD"
+        android:textAlignment="center"
+        android:translationY="150dp"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/joinText"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#FFFFFF"
+        android:text="@string/howToJoin"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="30sp"
+        android:translationY="90dp"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_conversion_absoluteWidth="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+</RelativeLayout>
