@@ -441,7 +441,7 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         Log.i(TAG, "retrieved number of rounds value");
-                        numberOfRounds = (task.getResult().getValue() != null) ? ((int) task.getResult().getValue()) : 3;
+                        numberOfRounds = (task.getResult().getValue(S) != null) ? ((int) task.getResult().getValue()) : 3;
                     }
                 });
         settingsRef.child(MOVE).get()
